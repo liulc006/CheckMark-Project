@@ -10,4 +10,3 @@ const conn = mongoose.connect(dB, {
 .catch((err) => console.log(err));
 
 module.exports = conn;
-
