@@ -16,10 +16,14 @@ const userSchema = new Schema({
 
 userSchema.pre('save', async function(next) {
     //Encrypt "password" before saving it into the database
-    const salt = process.env.JWT || await bcrypt.genSalt();
-    this.password = await bcrypt.hash(this.password, salt);
-    console.log('pre save')
-    next();
+    try{
+        const salt = process.env.JWT || await bcrypt.genSalt();
+        this.password = await bcrypt.hash(this.password, salt);
+        next();
+    }
+    catch(err){
+        console.log(err)
+    }
 })
 
 const User = model('User', userSchema);
