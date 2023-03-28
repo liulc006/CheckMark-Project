@@ -27,4 +27,4 @@ const syncAndSeed= async () => {
     }
 }
 
-module.exports = { conn, syncAndSeed};
+module.exports = { conn, syncAndSeed, User};
