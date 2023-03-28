@@ -14,6 +14,9 @@ const App = () => {
         setCredential({...credential, [ev.target.name]: ev.target.value})
     }
 
+    //token present NEED MORE WORK FOR ALWAYS LOGGED IN
+    console.log(window.localStorage.getItem('token'));
+
     const login = async() => {
         //Authentication => Getting the token
         const token= await axios.post('/api/auth', credential);
