@@ -10,27 +10,39 @@ const App = () => {
 
     const [ auth, setAuth ] = useState()
 
+    let token = window.localStorage.getItem('token');
+
     const typing = ev => {
         setCredential({...credential, [ev.target.name]: ev.target.value})
     }
 
-    //token present NEED MORE WORK FOR ALWAYS LOGGED IN
-    console.log(window.localStorage.getItem('token'));
+    const loggingWithToken = async(token) => {
+        //Authorization => Logging in
+        const user = await axios.get('/api/auth', {
+            headers:{
+                authorization: token
+            }
+        });
+        setAuth(user.data);
+    };
 
-    const login = async() => {
+    const attemptLogin = async() => {
         //Authentication => Getting the token
         const token= await axios.post('/api/auth', credential);
         console.log(token.data)
         window.localStorage.setItem('token', token.data);
 
-        //Authorization => Logging in
-        const user = await axios.get('/api/auth', {
-            headers:{
-                authorization: token.data
-            }
-        });
-        setAuth(user.data)
-    }
+        await loggingWithToken(token.data);
+    };
+
+    useEffect(()=>{
+        const fetchAuth= async(token) => {
+            await loggingWithToken(token)
+        }
+        if(token){
+            fetchAuth(token)
+        }
+    }, [])
 
     return (
         <>
@@ -51,7 +63,7 @@ const App = () => {
                     name = 'password'
                     sx={{margin:'5px'}}
                 />
-                <Button variant='contained' onClick={login} sx={{margin:'5px'}}>Login</Button>
+                <Button variant='contained' onClick={attemptLogin} sx={{margin:'5px'}}>Login</Button>
             </form>
             }
         </>
