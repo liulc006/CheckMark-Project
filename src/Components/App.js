@@ -29,18 +29,24 @@ const App = () => {
     const attemptLogin = async() => {
         //Authentication => Getting the token
         const token= await axios.post('/api/auth', credential);
-        console.log(token.data)
         window.localStorage.setItem('token', token.data);
-
         await loggingWithToken(token.data);
+    };
+
+    const logout = () => {
+        window.localStorage.removeItem('token');
+        setAuth()
+        //clear the credentials
+        setCredential({email: '', password: ''})    
+        
     };
 
     useEffect(()=>{
         const fetchAuth= async(token) => {
-            await loggingWithToken(token)
+            await loggingWithToken(token);
         }
         if(token){
-            fetchAuth(token)
+            fetchAuth(token);
         }
     }, [])
 
@@ -48,7 +54,10 @@ const App = () => {
         <>
             <h1>Welcome</h1>
             {auth?.email ? 
-            <h1>Hello {auth.email}</h1>
+            <>
+                <h1>Hello {auth.email}</h1>
+                <Button variant='contained' onClick={logout} sx={{margin:'5px'}}>Logout</Button>
+            </>
             :            
             <form>
                 <TextField id='email' label='Email' variant='outlined'
