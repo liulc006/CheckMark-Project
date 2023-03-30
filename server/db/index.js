@@ -14,12 +14,17 @@ const conn = mongoose.connect(dB, {
 const syncAndSeed= async () => {
     try{
         await mongoose.connection.dropDatabase();
-        const [luca] = await Promise.all([
+        const [luca, celine ] = await Promise.all([
             User.create({
                 firstName: "Luca",
                 lastName: "Liu",
                 email: "luca@gmail.com",
                 password: "123"
+            }),
+            User.create({
+                firstName: 'Celine',
+                email: 'celine@gmail.com',
+                password:'123'
             })
         ]);
 
@@ -46,6 +51,7 @@ const syncAndSeed= async () => {
                 description: 'Wash the dishes'
             }),
         ]);
+        console.log('Data Seeded')
     }
     catch(err){
         console.log(err);
