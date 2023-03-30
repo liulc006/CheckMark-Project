@@ -8,3 +8,9 @@ Tools:
 - Express (server)
 - React (front end)
 - Node.JS
+
+INSTALLATION:
+- Make sure to add a '.env' file containing:
+- - JWT_SECRET for token secret
+- do: npm install 
+- to run: npm run start
