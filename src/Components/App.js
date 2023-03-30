@@ -1,54 +1,34 @@
 import React, { useEffect, useState } from 'react';
 import { TextField, Box, Button } from '@mui/material';
-import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { attemptLogin, logout } from '../store';
 
 const App = () => {
+    const dispatch = useDispatch();
+
     const [ credential, setCredential ] = useState({
         email: '',
         password: '',
     });
 
-    const [ auth, setAuth ] = useState()
-
-    let token = window.localStorage.getItem('token');
+    const auth = useSelector(state=>state.auth);
 
     const typing = ev => {
-        setCredential({...credential, [ev.target.name]: ev.target.value})
-    }
-
-    const loggingWithToken = async(token) => {
-        //Authorization => Logging in
-        const user = await axios.get('/api/auth', {
-            headers:{
-                authorization: token
-            }
-        });
-        setAuth(user.data);
+        setCredential({...credential, [ev.target.name]: ev.target.value});
     };
 
-    const attemptLogin = async() => {
-        //Authentication => Getting the token
-        const token= await axios.post('/api/auth', credential);
-        window.localStorage.setItem('token', token.data);
-        await loggingWithToken(token.data);
+    const login = (ev) => {
+        ev.preventDefault();
+        dispatch(attemptLogin(credential));
     };
 
-    const logout = () => {
-        window.localStorage.removeItem('token');
-        setAuth()
+    const loggingOut = (ev) => {
+        ev.preventDefault();
+        dispatch(logout);
+
         //clear the credentials
-        setCredential({email: '', password: ''})    
-        
+        // setCredential({email: '', password: ''});    
     };
-
-    useEffect(()=>{
-        const fetchAuth= async(token) => {
-            await loggingWithToken(token);
-        }
-        if(token){
-            fetchAuth(token);
-        }
-    }, [])
 
     return (
         <>
@@ -56,7 +36,7 @@ const App = () => {
             {auth?.email ? 
             <>
                 <h1>Hello {auth.email}</h1>
-                <Button variant='contained' onClick={logout} sx={{margin:'5px'}}>Logout</Button>
+                <Button variant='contained' onClick={loggingOut} sx={{margin:'5px'}}>Logout</Button>
             </>
             :            
             <form>
@@ -72,7 +52,7 @@ const App = () => {
                     name = 'password'
                     sx={{margin:'5px'}}
                 />
-                <Button variant='contained' onClick={attemptLogin} sx={{margin:'5px'}}>Login</Button>
+                <Button variant='contained' onClick={login} sx={{margin:'5px'}}>Login</Button>
             </form>
             }
         </>
