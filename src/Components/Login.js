@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { attemptLogin } from '../store';
-import { TextField, Box, Button, Alert } from '@mui/material';
+import { TextField, Box, Button, Alert, Typography } from '@mui/material';
 
 export const Login = () => {
     const dispatch = useDispatch();
@@ -32,21 +32,22 @@ export const Login = () => {
     };
 
     return (
-        <form>
-            {errorMessage ? <Alert severity="error">{errorMessage}</Alert>:null}
+        <form style={{display:'flex', flexDirection:'column', margin:'5px'}}>
+            <Typography>Login</Typography>
+            {errorMessage ? <Alert sx={{width:'100%'}} severity="error">{errorMessage}</Alert>:null}
             <TextField id='email' label='Email' variant='outlined'
                 onChange={ typing }
                 value = {credential.email}
                 name = 'email'
-                sx={{margin:'5px'}}
+                sx={{margin:'5px', width:'20rem'}}
             />
             <TextField id='password' label='Password' variant='outlined'
                 onChange={ typing }
                 value = {credential.password}
                 name = 'password'
-                sx={{margin:'5px'}}
+                sx={{margin:'5px', width: '20rem'}}
             />
-            <Button variant='contained' onClick={login} sx={{margin:'5px'}}>Login</Button>
+            <Button variant='contained' onClick={login} sx={{margin:'5px', width: '20rem'}}>Login</Button>
         </form>        
     );
 };
