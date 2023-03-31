@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { TextField, Box, Button } from '@mui/material';
+import { TextField, Box, Button, Alert } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { attemptLogin, logout, loginWithToken } from '../store';
 
@@ -10,7 +10,7 @@ const App = () => {
         email: '',
         password: '',
     });
-    const [errorMessage, setErrorMessage] = useState('');
+    const [errorMessage, setErrorMessage] = useState(null);
 
     const { auth } = useSelector(state=>state);
 
@@ -20,7 +20,16 @@ const App = () => {
 
     const login = (ev) => {
         ev.preventDefault();
-        dispatch(attemptLogin(credential));
+        setErrorMessage(null)
+        dispatch(attemptLogin(credential))
+            .catch((err)=>{
+                if(err.response.status === 404){
+                    setErrorMessage('Account Not Found! Please use a valid email.')
+                }
+                else if (err.response.status === 401){
+                    setErrorMessage('Bad Credential! Account and Password do not match.')
+                }
+            })
     };
 
     const loggingOut = (ev) => {
@@ -44,6 +53,7 @@ const App = () => {
             </>
             :            
             <form>
+                {errorMessage ? <Alert severity="error">{errorMessage}</Alert>:null}
                 <TextField id='email' label='Email' variant='outlined'
                     onChange={ typing }
                     value = {credential.email}
