@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { TextField, Box, Button } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { attemptLogin, logout } from '../store';
+import { attemptLogin, logout, loginWithToken } from '../store';
 
 const App = () => {
     const dispatch = useDispatch();
@@ -10,8 +10,9 @@ const App = () => {
         email: '',
         password: '',
     });
+    const [errorMessage, setErrorMessage] = useState('');
 
-    const auth = useSelector(state=>state.auth);
+    const { auth } = useSelector(state=>state);
 
     const typing = ev => {
         setCredential({...credential, [ev.target.name]: ev.target.value});
@@ -23,12 +24,15 @@ const App = () => {
     };
 
     const loggingOut = (ev) => {
-        ev.preventDefault();
-        dispatch(logout);
-
+        dispatch(logout());
         //clear the credentials
-        // setCredential({email: '', password: ''});    
+        setCredential({email: '', password: ''});    
     };
+
+    useEffect(()=>{
+        //Runs at the beginning to check with you are logged in already
+        dispatch(loginWithToken());
+    }, []);
 
     return (
         <>
