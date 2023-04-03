@@ -4,6 +4,8 @@ import { useDispatch } from 'react-redux';
 import { logout, loginWithToken } from '../store';
 import { useSelector } from 'react-redux';
 import {Login} from './Login';
+import { Routes, Route } from 'react-router-dom';
+
 
 const App = () => {
     const dispatch = useDispatch();
@@ -21,27 +23,12 @@ const App = () => {
 
     return (
         <>
-            <h1 style={{position:'absolute'}}>Welcome</h1>
-            <Box sx={{display:'flex', flexDirection:'row'}}>
-                <Box>
-                    <Box component='img' 
-                        alt='background-image'
-                        src='../static/snow-mountain.jpg'
-                        sx={{height: '100vh', width:'60vw', objectFit: 'cover'}}
-                    />
+            <h1 style={{position:'absolute', color:'white', marginLeft:'15vw'}}>Welcome to CheckMark </h1>
 
-                </Box>
-                <Box>
-                    {auth?.email ? 
-                    <>
-                        <h1>Hello {auth.email}</h1>
-                        <Button variant='contained' onClick={loggingOut} sx={{margin:'5px'}}>Logout</Button>
-                    </>
-                    :            
-                    <Login/>
-                    }
-                </Box>
-            </Box>
+            <Routes>
+                <Route path='/' element={<Login/>} />
+                <Route path='*' element={<h1>Error! Go Back</h1>} />
+            </Routes>
         </>
     );
 };
