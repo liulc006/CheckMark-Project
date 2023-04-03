@@ -3,7 +3,8 @@ import { Button, Box } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { logout, loginWithToken } from '../store';
 import { useSelector } from 'react-redux';
-import {Login} from './Login';
+import Login from './Login';
+import Nav from './Nav';
 import { Routes, Route } from 'react-router-dom';
 
 
@@ -23,8 +24,7 @@ const App = () => {
 
     return (
         <>
-            <h1 style={{position:'absolute', color:'white', marginLeft:'15vw'}}>Welcome to CheckMark </h1>
-
+            <Nav/>
             <Routes>
                 <Route path='/' element={<Login/>} />
                 <Route path='*' element={<h1>Error! Go Back</h1>} />

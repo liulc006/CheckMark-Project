@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { attemptLogin } from '../store';
 import { TextField, Box, Button, Alert, Typography } from '@mui/material';
 
-export const Login = () => {
+const Login = () => {
     const dispatch = useDispatch();
 
     const [ credential, setCredential ] = useState({
@@ -61,3 +61,5 @@ export const Login = () => {
         </Box>        
     );
 };
+
+export default Login;
