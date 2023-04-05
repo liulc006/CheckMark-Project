@@ -1,24 +1,17 @@
 const express = require('express');
 const app = express.Router();
 const { Checklist } = require('../db');
-const isLoggedIn = require('./middleware');
-//CAN BE MAKE MORE SECURE BY IMPLEMENTING 'isLoggedIn' and passing token during API request
+const isLoggedIn = require('./middleware'); //will not work without passing {header => authorization token}
 
 //Get all the Checklists from userId
-app.get('/:id', async(req,res,next)=>{
+app.get('/', isLoggedIn, async(req,res,next)=> {
     try{
-        const checklists = await Checklist.find({userId: req.params.id });
+        const checklists = await Checklist.find({userId: req.user._id});
         res.send(checklists);
     }
     catch(err){
         next(err);
-    }
+    };
 });
-
-// app.get('/', async(req,res,next)=> {
-//     const checklists = await Checklist.find();
-//     console.log(checklists)
-//     res.send(checklists);
-// });
 
 module.exports = app;

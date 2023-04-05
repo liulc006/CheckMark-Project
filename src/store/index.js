@@ -15,12 +15,15 @@ import { configureStore } from '@reduxjs/toolkit';
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
 import auth from './auth';
+import checklist from './checklist';
 
 export const store = configureStore({
   reducer: {
     auth: auth,
+    checklist: checklist,
   },
   middleware: [thunk, logger]
 });
 
 export * from './auth';
+export * from './checklist';
