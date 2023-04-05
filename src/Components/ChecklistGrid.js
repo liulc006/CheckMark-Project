@@ -10,12 +10,14 @@ const ChecklistGrid = () => {
 
     useEffect(()=> {
         dispatch(fetchChecklist());
-    }, [])
+    }, []);
 
     return (
         <>
             <h1>list</h1>
-            <ChecklistCard checklistObj={checklist}/>
+            {checklist?.map(ele => {
+                return <ChecklistCard key={ele._id} checklistObj={ele} />})
+            }
         </>
     );
 };

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const checklist = (state={}, action) => {
+const checklist = (state=[], action) => {
     if(action.type === 'FETCH_CHECKLIST'){
         return action.checklist;
     }

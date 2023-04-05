@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { logout, loginWithToken } from '../store';
+import { loginWithToken } from '../store';
 import { useSelector } from 'react-redux';
 import Home from './Home';
 import Nav from './Nav';
