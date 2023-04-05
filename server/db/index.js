@@ -50,6 +50,13 @@ const syncAndSeed= async () => {
                 status: 'open',
                 description: 'Wash the dishes'
             }),
+            Checklist.create({
+                userId: celine._id,
+                priorityLevel: 'high',
+                tags: ['Work'],
+                status: 'open',
+                description: 'Call pharmacy'
+            }),
         ]);
         console.log('Data Seeded')
     }
@@ -58,4 +65,4 @@ const syncAndSeed= async () => {
     }
 }
 
-module.exports = { conn, syncAndSeed, User};
+module.exports = { conn, syncAndSeed, User, Checklist};

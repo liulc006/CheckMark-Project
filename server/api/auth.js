@@ -9,8 +9,8 @@ app.post('/', async(req, res, next)=>{
         res.send(await User.authenticate(req.body));
     }
     catch(err){
-        next(err)
-    }
+        next(err);
+    };
 });
 
 app.get('/', isLoggedIn, (req,res, next)=>{
@@ -18,8 +18,8 @@ app.get('/', isLoggedIn, (req,res, next)=>{
         res.send(req.user)
     }
     catch(err){
-        next(err)
-    }
-})
+        next(err);
+    };
+});
 
 module.exports = app;
