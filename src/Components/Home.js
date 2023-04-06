@@ -7,7 +7,6 @@ const Home = () => {
     const dispatch = useDispatch();
     const { auth } = useSelector(state => state);
 
-
     return (
         <>
             {auth._id ? 

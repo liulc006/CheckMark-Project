@@ -22,7 +22,7 @@ const ChecklistGrid = () => {
         <>
             <h1>Checklist:</h1>
             <Grid container spacing={2} sx={{width: 'auto', border:'solid black 1px', margin:'0 20 0 20',
-            display:'flex'
+            display:'flex', alignItems:'center'
             }}>
                 {checklist?.map(ele => {
                     return (

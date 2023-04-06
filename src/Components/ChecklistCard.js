@@ -5,6 +5,8 @@ import { Typography, Box, Card,
 } from "@mui/material";
 
 const ChecklistCard = (prop) => {
+    const date = new Date(prop.checklistObj.updatedAt);
+
     return (
         <>
         <Box>
@@ -12,11 +14,14 @@ const ChecklistCard = (prop) => {
                 borderWidth: '10px',
                 borderColor: (prop.checklistObj.priorityLevel === "high") ? "red"
                 :
-                (prop.checklistObj.priorityLevel === "medium") ? "orange" : "green",
+                (prop.checklistObj.priorityLevel === "medium") ? "orange" : "blanchedAlmond",
                 display: 'flex',
                 flexDirection:'column',
             }}>
                 <CardContent sx={{display:'flex', flexDirection:'column'}}>
+                    <Typography sx={{ fontSize: 10 }}>
+                        {date.toLocaleString()}
+                    </Typography>
                     <Typography sx={{ fontSize: 20 }}>
                         {prop.checklistObj.description}
                     </Typography>
