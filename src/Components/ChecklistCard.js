@@ -1,24 +1,30 @@
 import React from "react";
-import { Typography, Box, Card, CardActions, CardContent, Button, Chip } from "@mui/material";
+import { Typography, Box, Card, 
+    CardActions, CardContent, Button, 
+    Chip, Stack
+} from "@mui/material";
 
 const ChecklistCard = (prop) => {
     return (
         <>
-        <h1>card {prop.checklistObj._id}</h1>
-        <Box sx={{ minWidth: 275 , maxWidth: 600}}>
+        <Box>
             <Card variant="outlined" sx={{
                 borderWidth: '10px',
                 borderColor: (prop.checklistObj.priorityLevel === "high") ? "red"
                 :
-                (prop.checklistObj.priorityLevel === "medium") ? "orange" : "green"
+                (prop.checklistObj.priorityLevel === "medium") ? "orange" : "green",
+                display: 'flex',
+                flexDirection:'column',
             }}>
-                <CardContent>
+                <CardContent sx={{display:'flex', flexDirection:'column'}}>
                     <Typography sx={{ fontSize: 20 }}>
                         {prop.checklistObj.description}
                     </Typography>
-                    {prop.checklistObj.tags.map(ele => {
-                        return <Chip key={ele} variant="outlined" label={ele}/>
-                    })}
+                    <Stack direction='row' spacing='1' sx={{justifyContent:'right'}}>
+                        {prop.checklistObj.tags.map(ele => {
+                            return <Chip key={ele} variant="outlined" label={ele}/>
+                        })}
+                    </Stack>
                 </CardContent>
                 {/* <CardActions>
                     <Button variant="outlined">Completed?</Button>
