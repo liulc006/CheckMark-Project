@@ -13,7 +13,7 @@ const Nav = () => {
 
 
     return (
-        <div style={{display:'flex', flexDirection:'row', border:'1px solid black'}}>
+        <div style={{display:'flex', flexDirection:'row', backgroundColor:'FAF9F6'}}>
             <img style={{height:'10vh'}} alt='Logo' src="../static/Nav-Logo.png"/>
             <h1>Nav Bar: Welcome to CheckMark</h1>
             {auth._id ?
