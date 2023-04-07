@@ -9,10 +9,15 @@ import Modal from "@mui/material/Modal";
 
 
 const ChecklistGrid = () => {
+    //variable for displaying individual Checklist (Modal)
     const [ viewChecklist, setViewChecklist ] = useState({
         view: false,
         checklistObj: null,
     });
+    //variable for displaying form to add new Checklist (Modal)
+    const [ viewForm, setViewForm ] = useState(false);
+
+    //Getting checklist data from store
     const { checklist } = useSelector(state => state);
     const dispatch = useDispatch();
 
@@ -21,13 +26,11 @@ const ChecklistGrid = () => {
     }, []);
 
     const addChecklist = () => {
-        console.log('Add Checklist')
-    }
+        //set modal view form to True to display the add checklist form
+        setViewForm(true);
+    };
 
-    useEffect(()=>{
-        console.log(viewChecklist)
-    }, [viewChecklist])
-
+    //Closing Checklist Detail modal
     const handleCloseModal = () => {
         setViewChecklist({
             view: false,
@@ -35,6 +38,14 @@ const ChecklistGrid = () => {
         });
     };
 
+    //Closing Add Checklist Form modal
+    const handleCloseForm = () => {
+        setViewForm(false);
+    };
+
+    const submitHandler = () => {
+        console.log('FORM')
+    };
 
     return (
         <>
@@ -62,7 +73,6 @@ const ChecklistGrid = () => {
                             textAlign:'center'
                         }}>
                             <CardActionArea onClick={addChecklist}>
-                                {/* <Button variant="outlined">Completed?</Button> */}
                                 <AddCircleOutlineIcon sx={{color:'blue'}}/>
                             </CardActionArea>
                         </Card>
@@ -87,6 +97,27 @@ const ChecklistGrid = () => {
                         <CancelTwoToneIcon sx={{color:'white'}}/>
                     </Button>
                     <ChecklistCard key='modal checklist' checklistObj={viewChecklist.checklistObj} singleView={setViewChecklist}/>
+                </Box>
+            </Modal>
+            <Modal
+                open={viewForm}
+                onClose={handleCloseForm}
+            >
+                <Box 
+                    component='form'
+                    onSubmit={submitHandler}
+                    sx={{
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                        width: 400,
+                        bgcolor: 'background.paper',
+                        border: '2px solid #000',
+                        boxShadow: 24,
+                    }}
+                >
+                    <Typography>Form</Typography>
                 </Box>
             </Modal>
         </>
