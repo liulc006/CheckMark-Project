@@ -1,11 +1,12 @@
 import React from "react";
 import { Typography, Box, Card, 
     CardActions, CardContent, Button, 
-    Chip, Stack
+    Chip, Stack, CardActionArea
 } from "@mui/material";
 
 const ChecklistCard = (prop) => {
     const date = new Date(prop.checklistObj.updatedAt);
+    
 
     return (
         <>
