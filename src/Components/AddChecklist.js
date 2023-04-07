@@ -5,6 +5,7 @@ const AddChecklistForm = () => {
     const [input, setInput] = useState({
         description: '',
         priorityLevel: '',
+        tags: '',
     })
 
     const priorityLevelInput = [
@@ -62,6 +63,13 @@ const AddChecklistForm = () => {
                     </MenuItem>
                 )}
             </TextField>
+            <TextField 
+                label="Tags"
+                variant="outlined"
+                name="tags"
+                value={input.tags}
+                onChange={changeHandler}
+            />
             <Button variant="outlined" type="submit">Add</Button>    
 
         </Box>
