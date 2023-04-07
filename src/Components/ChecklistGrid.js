@@ -6,6 +6,7 @@ import { Grid, Button, Box, Card, CardActionArea, Typography } from "@mui/materi
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import CancelTwoToneIcon from '@mui/icons-material/CancelTwoTone';
 import Modal from "@mui/material/Modal";
+import AddChecklistForm from "./AddChecklist";
 
 
 const ChecklistGrid = () => {
@@ -41,10 +42,6 @@ const ChecklistGrid = () => {
     //Closing Add Checklist Form modal
     const handleCloseForm = () => {
         setViewForm(false);
-    };
-
-    const submitHandler = () => {
-        console.log('FORM')
     };
 
     return (
@@ -99,26 +96,13 @@ const ChecklistGrid = () => {
                     <ChecklistCard key='modal checklist' checklistObj={viewChecklist.checklistObj} singleView={setViewChecklist}/>
                 </Box>
             </Modal>
-            <Modal
+            <Modal key='form modal'
                 open={viewForm}
                 onClose={handleCloseForm}
             >
-                <Box 
-                    component='form'
-                    onSubmit={submitHandler}
-                    sx={{
-                        position: 'absolute',
-                        top: '50%',
-                        left: '50%',
-                        transform: 'translate(-50%, -50%)',
-                        width: 400,
-                        bgcolor: 'background.paper',
-                        border: '2px solid #000',
-                        boxShadow: 24,
-                    }}
-                >
-                    <Typography>Form</Typography>
-                </Box>
+                <>
+                    <AddChecklistForm />
+                </>
             </Modal>
         </>
     );
