@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import { Box, Typography, TextField, Select, MenuItem, InputLabel, Button } from "@mui/material";
 import { MuiChipsInput } from 'mui-chips-input';
+import { addChecklist } from "../store/checklist";
+import { useDispatch } from "react-redux";
 
 const AddChecklistForm = () => {
+    const dispatch = useDispatch();
+
     const [input, setInput] = useState({
         description: '',
         priorityLevel: '',
@@ -16,9 +20,10 @@ const AddChecklistForm = () => {
     ];
 
     const submitHandler = (ev) => {
-        ev.preventDefault()
-        const submission = {...input, tags: tags}
-        console.log(submission)
+        ev.preventDefault();
+        const submission = {...input, tags: tags};
+        console.log(submission);
+        dispatch(addChecklist(submission));
     };
 
     const changeHandler = (ev) => {
@@ -77,7 +82,6 @@ const AddChecklistForm = () => {
                 onChange={changeChip}
             />
             <Button variant="outlined" type="submit">Add</Button>    
-
         </Box>
     )
 };

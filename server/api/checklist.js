@@ -14,4 +14,15 @@ app.get('/', isLoggedIn, async(req,res,next)=> {
     };
 });
 
+//add new checklist to DB
+app.post('/add', isLoggedIn, async(req,res,next) => {
+    try{
+        const checklist = await Checklist.create({userId: req.user._id, ...req.body});
+        res.send(checklist);
+    }
+    catch(err){
+        next(err);
+    };
+});
+
 module.exports = app;

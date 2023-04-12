@@ -29045,16 +29045,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/Box/Box.js");
-/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/Typography/Typography.js");
-/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/TextField/TextField.js");
-/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/MenuItem/MenuItem.js");
-/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/Button/Button.js");
+/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/Box/Box.js");
+/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/Typography/Typography.js");
+/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/TextField/TextField.js");
+/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/MenuItem/MenuItem.js");
+/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/Button/Button.js");
 /* harmony import */ var mui_chips_input__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! mui-chips-input */ "./node_modules/mui-chips-input/dist/mui-chips-input.es.js");
+/* harmony import */ var _store_checklist__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../store/checklist */ "./src/store/checklist.js");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+
+
 
 
 
 const AddChecklistForm = () => {
+  const dispatch = (0,react_redux__WEBPACK_IMPORTED_MODULE_3__.useDispatch)();
   const [input, setInput] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({
     description: '',
     priorityLevel: ''
@@ -29077,6 +29082,7 @@ const AddChecklistForm = () => {
       tags: tags
     };
     console.log(submission);
+    dispatch((0,_store_checklist__WEBPACK_IMPORTED_MODULE_2__.addChecklist)(submission));
   };
   const changeHandler = ev => {
     setInput({
@@ -29088,7 +29094,7 @@ const AddChecklistForm = () => {
     setTags(value);
     ;
   };
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_2__["default"], {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_4__["default"], {
     component: "form",
     onSubmit: submitHandler,
     sx: {
@@ -29107,20 +29113,20 @@ const AddChecklistForm = () => {
         width: '25ch'
       }
     }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_3__["default"], null, "New Checklist"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_4__["default"], {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], null, "New Checklist"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], {
     label: "Description",
     variant: "outlined",
     name: "description",
     value: input.description,
     onChange: changeHandler
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_4__["default"], {
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], {
     select: true,
     id: "priority-select",
     name: "priorityLevel",
     label: "Priority",
     value: input.priorityLevel,
     onChange: changeHandler
-  }, priorityLevelInput.map(ele => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+  }, priorityLevelInput.map(ele => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], {
     value: ele.value,
     key: ele.label
   }, ele.label))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(mui_chips_input__WEBPACK_IMPORTED_MODULE_1__.MuiChipsInput, {
@@ -29129,7 +29135,7 @@ const AddChecklistForm = () => {
     name: "tags",
     value: tags,
     onChange: changeChip
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], {
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
     variant: "outlined",
     type: "submit"
   }, "Add"));
@@ -29660,6 +29666,7 @@ const attemptLogin = credential => {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "addChecklist": () => (/* binding */ addChecklist),
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
 /* harmony export */   "fetchChecklist": () => (/* binding */ fetchChecklist)
 /* harmony export */ });
@@ -29668,6 +29675,8 @@ __webpack_require__.r(__webpack_exports__);
 const checklist = (state = [], action) => {
   if (action.type === 'FETCH_CHECKLIST') {
     return action.checklist;
+  } else if (action.type === 'ADD_CHECKLIST') {
+    return [...state, action.checklist];
   }
   return state;
 };
@@ -29687,6 +29696,21 @@ const fetchChecklist = () => {
     }
   };
 };
+const addChecklist = newChecklist => {
+  return async dispatch => {
+    const token = window.localStorage.getItem('token');
+    const response = await axios__WEBPACK_IMPORTED_MODULE_0__["default"].post('/api/checklist/add', newChecklist, {
+      headers: {
+        authorization: token
+      }
+    });
+    console.log(response.data);
+    dispatch({
+      type: 'ADD_CHECKLIST',
+      checklist: response.data
+    });
+  };
+};
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (checklist);
 
 /***/ }),
@@ -29700,6 +29724,7 @@ const fetchChecklist = () => {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "addChecklist": () => (/* reexport safe */ _checklist__WEBPACK_IMPORTED_MODULE_2__.addChecklist),
 /* harmony export */   "attemptLogin": () => (/* reexport safe */ _auth__WEBPACK_IMPORTED_MODULE_1__.attemptLogin),
 /* harmony export */   "fetchChecklist": () => (/* reexport safe */ _checklist__WEBPACK_IMPORTED_MODULE_2__.fetchChecklist),
 /* harmony export */   "loginWithToken": () => (/* reexport safe */ _auth__WEBPACK_IMPORTED_MODULE_1__.loginWithToken),
