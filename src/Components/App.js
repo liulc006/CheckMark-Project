@@ -19,7 +19,7 @@ const App = () => {
 
     return (
         <>
-            <Nav/>
+            {auth._id? <Nav/>:null}
             <Routes>
                 <Route path='/' element={<Home/>} />
                 <Route path='*' element={<h1>Error! Go Back</h1>} />

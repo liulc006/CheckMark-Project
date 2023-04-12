@@ -32,32 +32,34 @@ const Login = () => {
     };
 
     return (
-        <Box sx={{display:'flex', flexDirection:'row'}}>
-            <Box>
-                <Box component='img' 
-                    alt='background-image'
-                    src='../static/snow-mountain.jpg'
-                    sx={{height: '100vh', width:'60vw', objectFit: 'cover'}}
-                />
-
+        <Box>
+            <Box component='img' 
+                alt='background-image'
+                src='../static/todolist.jpg'
+                sx={{height: '100vh', width:'100vw', objectFit: 'cover', position:'absolute', zIndex:'-1'}}
+            />
+            <Box sx={{display:'flex', justifyContent:'center', alignItems:'center'}}>
+                <form style={{display:'flex', flexDirection:'column', margin:'5px', alignItems:'center', border:'black 1px solid', backgroundColor:'white',
+                    borderRadius:'2%', padding:'2rem', marginTop:'15rem'
+                }}>
+                    <Typography variant='h5'>Welcome to CheckMark!</Typography>
+                    <Typography variant='h4'>User Login</Typography>
+                    {errorMessage ? <Alert sx={{width:'100%'}} severity="error">{errorMessage}</Alert>:null}
+                    <TextField id='email' label='Email' variant='outlined'
+                        onChange={ typing }
+                        value = {credential.email}
+                        name = 'email'
+                        sx={{margin:'5px', width:'20rem'}}
+                    />
+                    <TextField id='password' label='Password' variant='outlined'
+                        onChange={ typing }
+                        value = {credential.password}
+                        name = 'password'
+                        sx={{margin:'5px', width: '20rem'}}
+                    />
+                    <Button variant='contained' onClick={login} sx={{margin:'5px', width: '20rem'}}>Login</Button>
+                </form>
             </Box>
-            <form style={{display:'flex', flexDirection:'column', margin:'5px'}}>
-                <Typography>Login</Typography>
-                {errorMessage ? <Alert sx={{width:'100%'}} severity="error">{errorMessage}</Alert>:null}
-                <TextField id='email' label='Email' variant='outlined'
-                    onChange={ typing }
-                    value = {credential.email}
-                    name = 'email'
-                    sx={{margin:'5px', width:'20rem'}}
-                />
-                <TextField id='password' label='Password' variant='outlined'
-                    onChange={ typing }
-                    value = {credential.password}
-                    name = 'password'
-                    sx={{margin:'5px', width: '20rem'}}
-                />
-                <Button variant='contained' onClick={login} sx={{margin:'5px', width: '20rem'}}>Login</Button>
-            </form>
         </Box>        
     );
 };

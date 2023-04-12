@@ -1,6 +1,6 @@
 import React from "react";
 import { logout } from "../store";
-import { Button } from "@mui/material";
+import { Button, Box } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 
 const Nav = () => {
@@ -13,12 +13,15 @@ const Nav = () => {
 
 
     return (
-        <div style={{display:'flex', flexDirection:'row', backgroundColor:'FAF9F6'}}>
-            <img style={{height:'10vh'}} alt='Logo' src="../static/Nav-Logo.png"/>
-            <h1>Nav Bar: Welcome to CheckMark</h1>
-            {auth._id ?
-            <Button variant='contained' onClick={loggingOut}>Logout</Button>
-            : null}
+        <div style={{display:'flex', flexDirection:'row', backgroundColor:'FAF9F6', justifyContent:'space-between'}}>
+            <Box>
+                <img style={{height:'10vh'}} alt='Logo' src="../static/Nav-Logo.png"/>
+            </Box>
+            <Box sx={{display:'flex', justifyContent:'center', alignItems:'center' ,marginRight:'1rem'}}>
+                {auth._id ?
+                <Button variant='contained' onClick={loggingOut} sx={{height:'min-content'}}>Logout</Button>
+                : null}
+            </Box>
         </div>
     )
 }
