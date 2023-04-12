@@ -2396,6 +2396,205 @@ var weakMemoize = function weakMemoize(func) {
 
 /***/ }),
 
+/***/ "./node_modules/@mui/base/ClickAwayListener/ClickAwayListener.js":
+/*!***********************************************************************!*\
+  !*** ./node_modules/@mui/base/ClickAwayListener/ClickAwayListener.js ***!
+  \***********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var _mui_utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @mui/utils */ "./node_modules/@mui/utils/esm/useForkRef.js");
+/* harmony import */ var _mui_utils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @mui/utils */ "./node_modules/@mui/utils/esm/useEventCallback.js");
+/* harmony import */ var _mui_utils__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @mui/utils */ "./node_modules/@mui/utils/esm/ownerDocument.js");
+/* harmony import */ var _mui_utils__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @mui/utils */ "./node_modules/@mui/utils/esm/elementAcceptingRef.js");
+/* harmony import */ var _mui_utils__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @mui/utils */ "./node_modules/@mui/utils/esm/exactProp.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
+
+
+
+// TODO: return `EventHandlerName extends `on${infer EventName}` ? Lowercase<EventName> : never` once generatePropTypes runs with TS 4.1
+
+function mapEventPropToEvent(eventProp) {
+  return eventProp.substring(2).toLowerCase();
+}
+function clickedRootScrollbar(event, doc) {
+  return doc.documentElement.clientWidth < event.clientX || doc.documentElement.clientHeight < event.clientY;
+}
+/**
+ * Listen for click events that occur somewhere in the document, outside of the element itself.
+ * For instance, if you need to hide a menu when people click anywhere else on your page.
+ *
+ * Demos:
+ *
+ * - [Click-Away Listener](https://mui.com/base/react-click-away-listener/)
+ *
+ * API:
+ *
+ * - [ClickAwayListener API](https://mui.com/base/api/click-away-listener/)
+ */
+function ClickAwayListener(props) {
+  const {
+    children,
+    disableReactTree = false,
+    mouseEvent = 'onClick',
+    onClickAway,
+    touchEvent = 'onTouchEnd'
+  } = props;
+  const movedRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef(false);
+  const nodeRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef(null);
+  const activatedRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef(false);
+  const syntheticEventRef = react__WEBPACK_IMPORTED_MODULE_0__.useRef(false);
+  react__WEBPACK_IMPORTED_MODULE_0__.useEffect(() => {
+    // Ensure that this component is not "activated" synchronously.
+    // https://github.com/facebook/react/issues/20074
+    setTimeout(() => {
+      activatedRef.current = true;
+    }, 0);
+    return () => {
+      activatedRef.current = false;
+    };
+  }, []);
+  const handleRef = (0,_mui_utils__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  // @ts-expect-error TODO upstream fix
+  children.ref, nodeRef);
+
+  // The handler doesn't take event.defaultPrevented into account:
+  //
+  // event.preventDefault() is meant to stop default behaviors like
+  // clicking a checkbox to check it, hitting a button to submit a form,
+  // and hitting left arrow to move the cursor in a text input etc.
+  // Only special HTML elements have these default behaviors.
+  const handleClickAway = (0,_mui_utils__WEBPACK_IMPORTED_MODULE_3__["default"])(event => {
+    // Given developers can stop the propagation of the synthetic event,
+    // we can only be confident with a positive value.
+    const insideReactTree = syntheticEventRef.current;
+    syntheticEventRef.current = false;
+    const doc = (0,_mui_utils__WEBPACK_IMPORTED_MODULE_4__["default"])(nodeRef.current);
+
+    // 1. IE11 support, which trigger the handleClickAway even after the unbind
+    // 2. The child might render null.
+    // 3. Behave like a blur listener.
+    if (!activatedRef.current || !nodeRef.current || 'clientX' in event && clickedRootScrollbar(event, doc)) {
+      return;
+    }
+
+    // Do not act if user performed touchmove
+    if (movedRef.current) {
+      movedRef.current = false;
+      return;
+    }
+    let insideDOM;
+
+    // If not enough, can use https://github.com/DieterHolvoet/event-propagation-path/blob/master/propagationPath.js
+    if (event.composedPath) {
+      insideDOM = event.composedPath().indexOf(nodeRef.current) > -1;
+    } else {
+      insideDOM = !doc.documentElement.contains(
+      // @ts-expect-error returns `false` as intended when not dispatched from a Node
+      event.target) || nodeRef.current.contains(
+      // @ts-expect-error returns `false` as intended when not dispatched from a Node
+      event.target);
+    }
+    if (!insideDOM && (disableReactTree || !insideReactTree)) {
+      onClickAway(event);
+    }
+  });
+
+  // Keep track of mouse/touch events that bubbled up through the portal.
+  const createHandleSynthetic = handlerName => event => {
+    syntheticEventRef.current = true;
+    const childrenPropsHandler = children.props[handlerName];
+    if (childrenPropsHandler) {
+      childrenPropsHandler(event);
+    }
+  };
+  const childrenProps = {
+    ref: handleRef
+  };
+  if (touchEvent !== false) {
+    childrenProps[touchEvent] = createHandleSynthetic(touchEvent);
+  }
+  react__WEBPACK_IMPORTED_MODULE_0__.useEffect(() => {
+    if (touchEvent !== false) {
+      const mappedTouchEvent = mapEventPropToEvent(touchEvent);
+      const doc = (0,_mui_utils__WEBPACK_IMPORTED_MODULE_4__["default"])(nodeRef.current);
+      const handleTouchMove = () => {
+        movedRef.current = true;
+      };
+      doc.addEventListener(mappedTouchEvent, handleClickAway);
+      doc.addEventListener('touchmove', handleTouchMove);
+      return () => {
+        doc.removeEventListener(mappedTouchEvent, handleClickAway);
+        doc.removeEventListener('touchmove', handleTouchMove);
+      };
+    }
+    return undefined;
+  }, [handleClickAway, touchEvent]);
+  if (mouseEvent !== false) {
+    childrenProps[mouseEvent] = createHandleSynthetic(mouseEvent);
+  }
+  react__WEBPACK_IMPORTED_MODULE_0__.useEffect(() => {
+    if (mouseEvent !== false) {
+      const mappedMouseEvent = mapEventPropToEvent(mouseEvent);
+      const doc = (0,_mui_utils__WEBPACK_IMPORTED_MODULE_4__["default"])(nodeRef.current);
+      doc.addEventListener(mappedMouseEvent, handleClickAway);
+      return () => {
+        doc.removeEventListener(mappedMouseEvent, handleClickAway);
+      };
+    }
+    return undefined;
+  }, [handleClickAway, mouseEvent]);
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
+    children: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.cloneElement(children, childrenProps)
+  });
+}
+ true ? ClickAwayListener.propTypes /* remove-proptypes */ = {
+  // ----------------------------- Warning --------------------------------
+  // | These PropTypes are generated from the TypeScript type definitions |
+  // |     To update them edit TypeScript types and run "yarn proptypes"  |
+  // ----------------------------------------------------------------------
+  /**
+   * The wrapped element.
+   */
+  children: _mui_utils__WEBPACK_IMPORTED_MODULE_5__["default"].isRequired,
+  /**
+   * If `true`, the React tree is ignored and only the DOM tree is considered.
+   * This prop changes how portaled elements are handled.
+   * @default false
+   */
+  disableReactTree: (prop_types__WEBPACK_IMPORTED_MODULE_6___default().bool),
+  /**
+   * The mouse event to listen to. You can disable the listener by providing `false`.
+   * @default 'onClick'
+   */
+  mouseEvent: prop_types__WEBPACK_IMPORTED_MODULE_6___default().oneOf(['onClick', 'onMouseDown', 'onMouseUp', 'onPointerDown', 'onPointerUp', false]),
+  /**
+   * Callback fired when a "click away" event is detected.
+   */
+  onClickAway: (prop_types__WEBPACK_IMPORTED_MODULE_6___default().func.isRequired),
+  /**
+   * The touch event to listen to. You can disable the listener by providing `false`.
+   * @default 'onTouchEnd'
+   */
+  touchEvent: prop_types__WEBPACK_IMPORTED_MODULE_6___default().oneOf(['onTouchEnd', 'onTouchStart', false])
+} : 0;
+if (true) {
+  // eslint-disable-next-line
+  ClickAwayListener['propTypes' + ''] = (0,_mui_utils__WEBPACK_IMPORTED_MODULE_7__["default"])(ClickAwayListener.propTypes);
+}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ClickAwayListener);
+
+/***/ }),
+
 /***/ "./node_modules/@mui/base/FocusTrap/FocusTrap.js":
 /*!*******************************************************!*\
   !*** ./node_modules/@mui/base/FocusTrap/FocusTrap.js ***!
@@ -4206,6 +4405,29 @@ var _default = (0, _createSvgIcon.default)([/*#__PURE__*/(0, _jsxRuntime.jsx)("p
 }, "0"), /*#__PURE__*/(0, _jsxRuntime.jsx)("path", {
   d: "M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm3.59-13L12 10.59 8.41 7 7 8.41 10.59 12 7 15.59 8.41 17 12 13.41 15.59 17 17 15.59 13.41 12 17 8.41z"
 }, "1")], 'CancelTwoTone');
+exports["default"] = _default;
+
+/***/ }),
+
+/***/ "./node_modules/@mui/icons-material/Close.js":
+/*!***************************************************!*\
+  !*** ./node_modules/@mui/icons-material/Close.js ***!
+  \***************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "./node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+var _createSvgIcon = _interopRequireDefault(__webpack_require__(/*! ./utils/createSvgIcon */ "./node_modules/@mui/icons-material/utils/createSvgIcon.js"));
+var _jsxRuntime = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+var _default = (0, _createSvgIcon.default)( /*#__PURE__*/(0, _jsxRuntime.jsx)("path", {
+  d: "M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+}), 'Close');
 exports["default"] = _default;
 
 /***/ }),
@@ -28823,19 +29045,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/Box/Box.js");
-/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/Typography/Typography.js");
-/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/TextField/TextField.js");
-/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/MenuItem/MenuItem.js");
-/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/Button/Button.js");
+/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/Box/Box.js");
+/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/Typography/Typography.js");
+/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/TextField/TextField.js");
+/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/MenuItem/MenuItem.js");
+/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/Button/Button.js");
+/* harmony import */ var mui_chips_input__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! mui-chips-input */ "./node_modules/mui-chips-input/dist/mui-chips-input.es.js");
+
 
 
 const AddChecklistForm = () => {
   const [input, setInput] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({
     description: '',
-    priorityLevel: '',
-    tags: ''
+    priorityLevel: ''
   });
+  const [tags, setTags] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
   const priorityLevelInput = [{
     value: 'high',
     label: 'High'
@@ -28848,7 +29072,11 @@ const AddChecklistForm = () => {
   }];
   const submitHandler = ev => {
     ev.preventDefault();
-    console.log(input);
+    const submission = {
+      ...input,
+      tags: tags
+    };
+    console.log(submission);
   };
   const changeHandler = ev => {
     setInput({
@@ -28856,7 +29084,11 @@ const AddChecklistForm = () => {
       [ev.target.name]: ev.target.value
     });
   };
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_1__["default"], {
+  const changeChip = value => {
+    setTags(value);
+    ;
+  };
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_2__["default"], {
     component: "form",
     onSubmit: submitHandler,
     sx: {
@@ -28875,29 +29107,29 @@ const AddChecklistForm = () => {
         width: '25ch'
       }
     }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_2__["default"], null, "New Checklist"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_3__["default"], {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_3__["default"], null, "New Checklist"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_4__["default"], {
     label: "Description",
     variant: "outlined",
     name: "description",
     value: input.description,
     onChange: changeHandler
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_3__["default"], {
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_4__["default"], {
     select: true,
     id: "priority-select",
     name: "priorityLevel",
     label: "Priority",
     value: input.priorityLevel,
     onChange: changeHandler
-  }, priorityLevelInput.map(ele => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_4__["default"], {
+  }, priorityLevelInput.map(ele => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
     value: ele.value,
     key: ele.label
-  }, ele.label))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_3__["default"], {
+  }, ele.label))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(mui_chips_input__WEBPACK_IMPORTED_MODULE_1__.MuiChipsInput, {
     label: "Tags",
     variant: "outlined",
     name: "tags",
-    value: input.tags,
-    onChange: changeHandler
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    value: tags,
+    onChange: changeChip
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], {
     variant: "outlined",
     type: "submit"
   }, "Add"));
@@ -29844,6 +30076,387 @@ exports.typeOf = typeOf;
 if (false) {} else {
   module.exports = __webpack_require__(/*! ./cjs/react-is.development.js */ "./node_modules/hoist-non-react-statics/node_modules/react-is/cjs/react-is.development.js");
 }
+
+
+/***/ }),
+
+/***/ "./node_modules/mui-chips-input/dist/mui-chips-input.es.js":
+/*!*****************************************************************!*\
+  !*** ./node_modules/mui-chips-input/dist/mui-chips-input.es.js ***!
+  \*****************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "MuiChipsInput": () => (/* binding */ Fe)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _mui_material_Chip__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @mui/material/Chip */ "./node_modules/@mui/material/Chip/Chip.js");
+/* harmony import */ var _mui_material_styles__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @mui/material/styles */ "./node_modules/@mui/material/styles/styled.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _mui_icons_material_Close__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @mui/icons-material/Close */ "./node_modules/@mui/icons-material/Close.js");
+/* harmony import */ var _mui_material_ClickAwayListener__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @mui/material/ClickAwayListener */ "./node_modules/@mui/base/ClickAwayListener/ClickAwayListener.js");
+/* harmony import */ var _mui_material_IconButton__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @mui/material/IconButton */ "./node_modules/@mui/material/IconButton/IconButton.js");
+/* harmony import */ var _mui_material_TextField__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @mui/material/TextField */ "./node_modules/@mui/material/TextField/TextField.js");
+
+
+
+
+
+
+
+
+const O = {
+  enter: "Enter",
+  backspace: "Backspace"
+}, Ae = {
+  ime: 229
+}, Ie = (0,_mui_material_styles__WEBPACK_IMPORTED_MODULE_2__["default"])(_mui_material_Chip__WEBPACK_IMPORTED_MODULE_3__["default"])(({ theme: t, size: n }) => `
+    max-width: 100%;
+    margin: 2px 4px;
+    height: ${n === "small" ? "26px" : "32px"};
+
+
+    &[aria-disabled="true"] > svg {
+      color: ${t.palette.action.disabled};
+      cursor: default;
+    }
+
+    &.MuiChipsInput-Chip-Editing {
+      background-color: ${t.palette.primary.light};
+      color: ${t.palette.primary.contrastText};
+    }
+  `), we = {
+  ChipStyled: Ie
+}, H = (t) => {
+  const {
+    className: n,
+    index: i,
+    onDelete: r,
+    disabled: s,
+    onEdit: g,
+    isEditing: D,
+    disableEdition: h,
+    ...y
+  } = t, c = (d) => {
+    d.key === O.enter && r(i);
+  }, A = (d) => {
+    d?.preventDefault?.(), d?.stopPropagation?.(), r(i);
+  }, b = (d) => {
+    d.target.textContent === y.label && (s || g(i));
+  };
+  return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(we.ChipStyled, {
+    className: `MuiChipsInput-Chip ${D ? "MuiChipsInput-Chip-Editing" : ""} ${n || ""}`,
+    onKeyDown: c,
+    disabled: s,
+    onDoubleClick: h ? void 0 : b,
+    tabIndex: s ? -1 : 0,
+    "aria-disabled": s,
+    onDelete: A,
+    ...y
+  });
+};
+function ke(t) {
+  return typeof t == "boolean";
+}
+function Oe(t) {
+  return typeof t == "object" && !Array.isArray(t) && t !== null;
+}
+function J(t, n) {
+  typeof n == "function" ? n(t) : n && Oe(n) && "current" in n && (n.current = t);
+}
+const Te = (0,_mui_material_styles__WEBPACK_IMPORTED_MODULE_2__["default"])("div")`
+  top: 50%;
+  transform: translateY(-50%);
+  right: 10px;
+  position: absolute;
+`, $e = (0,_mui_material_styles__WEBPACK_IMPORTED_MODULE_2__["default"])(_mui_material_TextField__WEBPACK_IMPORTED_MODULE_4__["default"])((t) => `
+    max-width: 100%;
+
+    .MuiInputBase-root {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      row-gap: 5px;
+      padding-top: ${t.size === "small" ? "5px" : "9px"};
+      padding-right: ${t.InputProps?.endAdornment ? "30px" : "9px"};
+      padding-bottom: ${t.size === "small" ? "5px" : "9px"};
+      padding-left: 10px;
+
+      input {
+        min-width: 30px;
+        width: auto;
+        flex-grow: 1;
+        text-overflow: ellipsis;
+        padding: ${t.size === "small" ? "3.5px 4px" : "7.5px 4px"};
+        align-self: center;
+      }
+    }
+  `), Be = (0,_mui_material_styles__WEBPACK_IMPORTED_MODULE_2__["default"])(_mui_material_Chip__WEBPACK_IMPORTED_MODULE_3__["default"])(({ theme: t, size: n }) => `
+    max-width: 100%;
+    margin: 2px 4px;
+    height: ${n === "small" ? "26px" : "32px"};
+
+    &[aria-disabled="true"] > svg.MuiChip-deleteIcon {
+      color: ${t.palette.action.disabled};
+      cursor: default;
+    }
+  `), Q = {
+  ChipStyled: Be,
+  TextFieldStyled: $e,
+  EndAdornmentClose: Te
+}, Z = react__WEBPACK_IMPORTED_MODULE_0___default().forwardRef((t, n) => {
+  const {
+    chips: i,
+    onAddChip: r,
+    onEditChip: s,
+    onDeleteChip: g,
+    onDeleteAllChips: D,
+    InputProps: h,
+    onInputChange: y,
+    disabled: c,
+    clearInputOnBlur: A,
+    validate: b,
+    error: d,
+    helperText: T,
+    hideClearAll: I,
+    inputProps: K,
+    size: $,
+    disableDeleteOnBackspace: v,
+    disableEdition: V,
+    className: M,
+    renderChip: F,
+    addOnWhichKey: w,
+    onFocus: o,
+    inputRef: p,
+    inputValue: B,
+    ...ee
+  } = t, [te, ne] = react__WEBPACK_IMPORTED_MODULE_0___default().useState(""), [z, Y] = react__WEBPACK_IMPORTED_MODULE_0___default().useState(""), N = react__WEBPACK_IMPORTED_MODULE_0___default().useRef(null), S = react__WEBPACK_IMPORTED_MODULE_0___default().useRef(!1), ie = react__WEBPACK_IMPORTED_MODULE_0___default().useRef(typeof B == "string"), [m, W] = react__WEBPACK_IMPORTED_MODULE_0___default().useState(null), {
+    onKeyDown: le,
+    ...re
+  } = K || {}, {
+    inputRef: Se,
+    ...oe
+  } = h || {}, j = () => {
+    Y("");
+  }, _ = ie.current, k = _ ? B : te, R = (e) => {
+    y?.(e), _ || ne(e);
+  }, ae = (e) => {
+    R(i[e]), W(e), j();
+  }, E = () => {
+    W(null);
+  }, f = () => {
+    j(), R("");
+  }, se = (e) => {
+    R(e.target.value);
+  }, L = () => {
+    !S.current || (m !== null ? (E(), f()) : A && f(), S.current = !1);
+  }, de = (e) => {
+    N.current = e, p && J(e, p), n && J(e, n);
+  }, U = (e, l) => (u) => {
+    if (typeof b == "function") {
+      const a = b(e);
+      if (a === !1) {
+        l.preventDefault();
+        return;
+      }
+      if (!ke(a) && a.isError) {
+        l.preventDefault(), Y(a.textError);
+        return;
+      }
+    }
+    u();
+  }, pe = (e, l, u) => {
+    U(e, u)(() => {
+      s?.(e, l), E(), f();
+    });
+  }, ue = (e, l) => {
+    U(e, l)(() => {
+      r?.(k.trim()), f();
+    });
+  }, ce = (e, l) => l === Ae.ime ? !1 : w ? Array.isArray(w) ? w.some((u) => u === e) : w === e : e === O.enter, he = (e) => {
+    const l = ce(e.key, e.keyCode), u = e.key === O.backspace, a = k.trim();
+    if (e.code === "Tab") {
+      L();
+      return;
+    }
+    if (l && e.preventDefault(), k.length > 0 && l)
+      a.length === 0 ? f() : m !== null ? pe(a, m, e) : ue(a, e);
+    else if (u && k.length === 0 && i.length > 0 && !v) {
+      const q = i.length - 1;
+      g?.(q), m === q && E();
+    }
+    le?.(e);
+  }, fe = (e) => {
+    e.preventDefault(), o?.(e), S.current = !0;
+  }, Ce = (e) => {
+    e.preventDefault(), !I && !c && (D?.(), f(), E());
+  }, me = (e) => {
+    e === m ? (f(), E()) : ae(e), N.current?.focus();
+  }, xe = (e) => {
+    c || (g?.(e), m !== null && (E(), f()));
+  }, G = i.length > 0;
+  return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_mui_material_ClickAwayListener__WEBPACK_IMPORTED_MODULE_5__["default"], {
+    onClickAway: L,
+    children: /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(Q.TextFieldStyled, {
+      value: k,
+      onChange: se,
+      ref: n,
+      className: `MuiChipsInput-TextField ${M || ""}`,
+      size: $,
+      placeholder: "Type and press enter",
+      onFocus: fe,
+      inputProps: {
+        onKeyDown: he,
+        ...re
+      },
+      disabled: c,
+      error: Boolean(z) || d,
+      helperText: z || T,
+      InputProps: {
+        inputRef: de,
+        startAdornment: G ? i.map((e, l) => {
+          const u = `chip-${l}`, a = {
+            index: l,
+            onEdit: me,
+            label: e,
+            title: e,
+            isEditing: l === m,
+            size: $,
+            disabled: c,
+            disableEdition: V,
+            onDelete: xe
+          };
+          return F ? F(H, u, a) : /* @__PURE__ */ (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(H, {
+            ...a,
+            key: u
+          });
+        }) : null,
+        endAdornment: I ? null : /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(Q.EndAdornmentClose, {
+          style: {
+            visibility: G ? "visible" : "hidden"
+          },
+          children: /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_mui_material_IconButton__WEBPACK_IMPORTED_MODULE_6__["default"], {
+            "aria-label": "Clear",
+            title: "Clear",
+            disabled: c,
+            size: "small",
+            onClick: Ce,
+            children: /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_mui_icons_material_Close__WEBPACK_IMPORTED_MODULE_7__["default"], {
+              fontSize: "small"
+            })
+          })
+        }),
+        ...oe
+      },
+      ...ee
+    })
+  });
+});
+Z.defaultProps = {
+  onInputChange: () => {
+  },
+  clearInputOnBlur: !1,
+  hideClearAll: !1,
+  disableDeleteOnBackspace: !1,
+  disableEdition: !1,
+  addOnWhichKey: O.enter,
+  onDeleteChip: () => {
+  },
+  onAddChip: () => {
+  },
+  inputValue: void 0,
+  onEditChip: () => {
+  },
+  renderChip: void 0,
+  onDeleteAllChips: () => {
+  },
+  validate: () => !0
+};
+function Pe(t, n) {
+  return [...t, n];
+}
+function Ke(t, n) {
+  return t.filter((i, r) => n !== r);
+}
+function ve(t, n, i) {
+  return t.map((r, s) => n === s ? i : r);
+}
+const Fe = react__WEBPACK_IMPORTED_MODULE_0___default().forwardRef((t, n) => {
+  const {
+    value: i,
+    onChange: r,
+    onAddChip: s,
+    onInputChange: g,
+    onDeleteChip: D,
+    disabled: h,
+    validate: y,
+    clearInputOnBlur: c,
+    hideClearAll: A,
+    disableDeleteOnBackspace: b,
+    onEditChip: d,
+    renderChip: T,
+    disableEdition: I,
+    addOnWhichKey: K,
+    inputValue: $,
+    ...v
+  } = t;
+  return /* @__PURE__ */ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(Z, {
+    chips: i,
+    onAddChip: (o) => {
+      if (h)
+        return;
+      const p = Pe(i, o), B = p.length - 1;
+      s?.(o, B), r?.(p);
+    },
+    onInputChange: g,
+    disableDeleteOnBackspace: b,
+    onDeleteChip: (o) => {
+      if (h)
+        return;
+      const p = i[o];
+      r?.(Ke(i, o)), D?.(p, o);
+    },
+    onEditChip: (o, p) => {
+      h || I || (r?.(ve(i, p, o)), d?.(o, p));
+    },
+    renderChip: T,
+    onDeleteAllChips: () => {
+      r?.([]);
+    },
+    clearInputOnBlur: c,
+    disabled: h,
+    disableEdition: I,
+    validate: y,
+    inputValue: $,
+    hideClearAll: A,
+    addOnWhichKey: K,
+    ...v,
+    ref: n
+  });
+});
+Fe.defaultProps = {
+  value: [],
+  onChange: () => {
+  },
+  onAddChip: () => {
+  },
+  onDeleteChip: () => {
+  },
+  onInputChange: () => {
+  },
+  onEditChip: () => {
+  },
+  addOnWhichKey: O.enter,
+  clearInputOnBlur: !1,
+  disableEdition: !1,
+  hideClearAll: !1,
+  disableDeleteOnBackspace: !1,
+  validate: () => !0
+};
+
 
 
 /***/ }),

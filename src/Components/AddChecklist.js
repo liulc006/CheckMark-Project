@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { Box, Typography, TextField, Select, MenuItem, InputLabel, Button } from "@mui/material";
+import { MuiChipsInput } from 'mui-chips-input';
 
 const AddChecklistForm = () => {
     const [input, setInput] = useState({
         description: '',
         priorityLevel: '',
-        tags: '',
-    })
+    });
+    const [tags, setTags] = useState([])
 
     const priorityLevelInput = [
         {value: 'high', label: 'High'},
@@ -16,12 +17,17 @@ const AddChecklistForm = () => {
 
     const submitHandler = (ev) => {
         ev.preventDefault()
-        console.log(input)
+        const submission = {...input, tags: tags}
+        console.log(submission)
     };
 
     const changeHandler = (ev) => {
         setInput({...input, [ev.target.name]:ev.target.value});
     };
+
+    const changeChip = (value) => {
+        setTags(value);;
+    }
 
     return (
         <Box 
@@ -63,12 +69,12 @@ const AddChecklistForm = () => {
                     </MenuItem>
                 )}
             </TextField>
-            <TextField 
+            <MuiChipsInput                 
                 label="Tags"
                 variant="outlined"
                 name="tags"
-                value={input.tags}
-                onChange={changeHandler}
+                value={tags}
+                onChange={changeChip}
             />
             <Button variant="outlined" type="submit">Add</Button>    
 
