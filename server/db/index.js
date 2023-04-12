@@ -6,7 +6,7 @@ dotenv.config();
 
 
 const dB = process.env.DATABASE_URL || 'mongodb://localhost:27017/checkmark-app';
-console.log()
+console.log(dB)
 
 const conn = mongoose.connect(dB, {
     useNewUrlParser: true,
