@@ -1,8 +1,12 @@
 const mongoose = require('mongoose');
 const User = require('./model/Users');
 const Checklist = require('./model/Checklists');
+const dotenv = require("dotenv");
+dotenv.config();
+
 
 const dB = process.env.DATABASE_URL || 'mongodb://localhost:27017/checkmark-app';
+console.log()
 
 const conn = mongoose.connect(dB, {
     useNewUrlParser: true,
