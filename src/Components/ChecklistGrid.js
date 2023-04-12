@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import ChecklistCard from "./ChecklistCard";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchChecklist } from "../store";
-import { Grid, Button, Box, Card, CardActionArea, Typography } from "@mui/material";
+import { Grid, Button, Box, Card, CardActionArea, Typography, ToggleButton, ToggleButtonGroup } from "@mui/material";
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import CancelTwoToneIcon from '@mui/icons-material/CancelTwoTone';
 import Modal from "@mui/material/Modal";
@@ -10,6 +10,9 @@ import AddChecklistForm from "./AddChecklist";
 
 
 const ChecklistGrid = () => {
+    //checklistStatus let you view completed or on-going checklists
+    const [checklistStatus, setChecklistStatus] = useState('open');
+
     //variable for displaying individual Checklist (Modal)
     const [ viewChecklist, setViewChecklist ] = useState({
         view: false,
@@ -44,38 +47,59 @@ const ChecklistGrid = () => {
         setViewForm(false);
     };
 
+    //Change view for checklist grid
+    const toggleChange = (ev) => {
+        setChecklistStatus(ev.target.value);
+    };
+
     return (
         <>
             <h1>Checklist:</h1>
-            <Grid container spacing={2} sx={{width: 'auto', margin:'0 20 0 20',
-            display:'flex', alignItems:'center'
+            <Box sx={{
+                margin:'0 20 0 20'
             }}>
-                {checklist?.map(ele => {
-                    return (
-                        <Grid key={ele._id} item xs={6} md={4} lg={3} sx={{}}>
-                            <CardActionArea onClick={()=>setViewChecklist({view:true,checklistObj: ele})}>
-                                <ChecklistCard key={ele._id} checklistObj={ele}/>
-                            </CardActionArea>    
-                        </Grid>
-                    )})
-                }
-                <Grid key='new checklist' item xs={6} md={4} lg={3} sx={{}}>
-                    <Box>
-                        <Card variant="outlined" sx={{
-                            borderWidth: '10px',
-                            borderColor: "gray",
-                            display: 'flex',
-                            minHeight:100,
-                            justifyContent:'center',
-                            textAlign:'center'
-                        }}>
-                            <CardActionArea onClick={addChecklist}>
-                                <AddCircleOutlineIcon sx={{color:'blue'}}/>
-                            </CardActionArea>
-                        </Card>
-                    </Box>
+                <ToggleButtonGroup
+                    color="primary"
+                    value={checklistStatus}
+                    exclusive
+                    onChange={toggleChange}
+                    aria-label="Platform"
+                >
+                    <ToggleButton value="open">On Going</ToggleButton>
+                    <ToggleButton value="close">Completed</ToggleButton>
+                </ToggleButtonGroup>
+                <Grid container spacing={2} sx={{width: 'auto',
+                display:'flex', alignItems:'center'
+                }}>
+                    {checklist?.map(ele => {
+                        if(ele.status === checklistStatus){
+                            return (
+                                <Grid key={ele._id} item xs={6} md={4} lg={3} sx={{}}>
+                                    <CardActionArea onClick={()=>setViewChecklist({view:true,checklistObj: ele})}>
+                                        <ChecklistCard key={ele._id} checklistObj={ele}/>
+                                    </CardActionArea>    
+                                </Grid>
+                            )
+                        }
+                    })}
+                    <Grid key='new checklist' item xs={6} md={4} lg={3} sx={{}}>
+                        <Box>
+                            <Card variant="outlined" sx={{
+                                borderWidth: '10px',
+                                borderColor: "gray",
+                                display: 'flex',
+                                minHeight:100,
+                                justifyContent:'center',
+                                textAlign:'center'
+                            }}>
+                                <CardActionArea onClick={addChecklist}>
+                                    <AddCircleOutlineIcon sx={{color:'blue'}}/>
+                                </CardActionArea>
+                            </Card>
+                        </Box>
+                    </Grid>
                 </Grid>
-            </Grid>
+            </Box>
             <Modal
                 open={viewChecklist.view}
             >
