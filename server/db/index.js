@@ -1,8 +1,12 @@
 const mongoose = require('mongoose');
 const User = require('./model/Users');
 const Checklist = require('./model/Checklists');
+const dotenv = require("dotenv");
+dotenv.config();
+
 
 const dB = process.env.DATABASE_URL || 'mongodb://localhost:27017/checkmark-app';
+console.log()
 
 const conn = mongoose.connect(dB, {
     useNewUrlParser: true,
@@ -50,6 +54,13 @@ const syncAndSeed= async () => {
                 status: 'open',
                 description: 'Wash the dishes'
             }),
+            Checklist.create({
+                userId: celine._id,
+                priorityLevel: 'high',
+                tags: ['Work'],
+                status: 'open',
+                description: 'Call pharmacy'
+            }),
         ]);
         console.log('Data Seeded')
     }
@@ -58,4 +69,4 @@ const syncAndSeed= async () => {
     }
 }
 
-module.exports = { conn, syncAndSeed, User};
+module.exports = { conn, syncAndSeed, User, Checklist};

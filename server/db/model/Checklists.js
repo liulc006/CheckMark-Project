@@ -20,6 +20,8 @@ const checklistSchema = new Schema({
         required: true,
         default: 'open'
     }
+}, {
+    timestamps:true
 });
 
 const Checklist = model('Checklist', checklistSchema);
