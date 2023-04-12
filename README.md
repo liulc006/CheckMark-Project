@@ -3,6 +3,8 @@ CheckMark Project
 Description:
 WebApp that keep notes of your reminder and checklist + additional functionality "Jira/Kanban" in order to keep track on more complex tasks
 
+URL: http://checkmark-env.eba-5y4kwr4j.us-east-2.elasticbeanstalk.com/
+
 Tools:
 - MongoDB as database
 - Express (server)
