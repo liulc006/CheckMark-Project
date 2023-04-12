@@ -7,6 +7,7 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import CancelTwoToneIcon from '@mui/icons-material/CancelTwoTone';
 import Modal from "@mui/material/Modal";
 import AddChecklistForm from "./AddChecklist";
+import ChecklistDetail from "./ChecklistDetail";
 
 
 const ChecklistGrid = () => {
@@ -117,7 +118,7 @@ const ChecklistGrid = () => {
                     <Button onClick={handleCloseModal} sx={{position:'absolute', left:'92.5%', bottom:'90%'}}>
                         <CancelTwoToneIcon sx={{color:'white'}}/>
                     </Button>
-                    <ChecklistCard key='modal checklist' checklistObj={viewChecklist.checklistObj} singleView={setViewChecklist}/>
+                    <ChecklistDetail key='modal checklist' checklistObj={viewChecklist.checklistObj}/>
                 </Box>
             </Modal>
             <Modal key='form modal'

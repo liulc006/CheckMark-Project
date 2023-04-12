@@ -4,7 +4,7 @@ import { Typography, Box, Card,
     Chip, Stack, CardActionArea
 } from "@mui/material";
 
-const ChecklistCard = (prop) => {
+const ChecklistDetail = (prop) => {
     const date = new Date(prop.checklistObj.updatedAt);
     
 
@@ -21,7 +21,20 @@ const ChecklistCard = (prop) => {
             }}>
                 <CardContent sx={{display:'flex', flexDirection:'column'}}>
                     <Typography sx={{ fontSize: 10 }}>
-                        {date.toLocaleString()}
+                        Updated On: {date.toLocaleString()}
+                    </Typography>
+                    <Typography sx={{ fontSize: 15, color:
+                        prop.checklistObj.status==='open' ? 'red': 'green' }}>
+                        Status: {prop.checklistObj.status}
+                    </Typography>
+                    <Typography sx={{ fontSize: 15}}>
+                        Priority: 
+                        <span style={{color: (prop.checklistObj.priorityLevel === "high") ? "red"
+                        :
+                        (prop.checklistObj.priorityLevel === "medium") ? "orange" : "gold"
+                        }}>
+                            {prop.checklistObj.priorityLevel}
+                        </span>
                     </Typography>
                     <Typography sx={{ fontSize: 20 }}>
                         {prop.checklistObj.description}
@@ -41,4 +54,4 @@ const ChecklistCard = (prop) => {
     );
 };
 
-export default ChecklistCard;
+export default ChecklistDetail;
