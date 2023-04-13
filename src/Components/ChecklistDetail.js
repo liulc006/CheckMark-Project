@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { Typography, Box, Card, 
     CardActions, CardContent, Button, 
     Chip, Stack, CardActionArea
@@ -8,18 +8,26 @@ import { deleteChecklist } from "../store/checklist";
 
 const ChecklistDetail = (prop) => {
     const date = new Date(prop.checklistObj.updatedAt);
+    const [viewUpdate, setViewUpdate] = useState(false);
 
     const dispatch = useDispatch();
     
+    //button function to delete checklist
     const deleteButton = (ev) => {
         ev.preventDefault();
         dispatch(deleteChecklist(prop.checklistObj));
         prop.setView({view: false, checklistObj: null})
     };
 
+    //set viewupdate to true and display UpdateForm component to update checklist
+    const updateButton = (ev) => {
+        ev.preventDefault();
+        setViewUpdate(true);
+    };
+
     return (
         <>
-        <Box>
+        {!viewUpdate ? <Box>
             <Card variant="outlined" sx={{
                 borderWidth: '10px',
                 borderColor: (prop.checklistObj.priorityLevel === "high") ? "red"
@@ -56,13 +64,16 @@ const ChecklistDetail = (prop) => {
                 </CardContent>
                 <Box sx={{display:'flex', flexDirection:'row',justifyContent:'space-around'}}>
                     <Button variant="outlined" sx={{width:'min-content'}} onClick={deleteButton} >Delete</Button>
-                    <Button variant="outlined" sx={{width:'min-content'}}>Edit</Button>
+                    <Button variant="outlined" sx={{width:'min-content'}} onClick={updateButton}>Edit</Button>
                 </Box>
                 <Box sx={{display:'flex', flexDirection:'row',justifyContent:'center'}}>
                     <Button variant="outlined" sx={{width:'min-content'}}>Completed</Button>
                 </Box>
             </Card>
         </Box>
+        :
+        <h1>View Update Form</h1>
+        }
         </>
     );
 };

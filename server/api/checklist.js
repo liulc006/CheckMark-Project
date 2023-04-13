@@ -25,10 +25,21 @@ app.post('/add', isLoggedIn, async(req,res,next) => {
     };
 });
 
+//delete checklist from DB
 app.delete('/delete', isLoggedIn, async(req,res,next)=> {
     try{
-        const checklist = await Checklist.deleteOne({_id: req.body._id, userId:req.user});
+        await Checklist.deleteOne({_id: req.body._id, userId:req.user});
         res.sendStatus(200)
+    }
+    catch(err){
+        next(err);
+    };
+});
+
+app.put('/update', isLoggedIn, async(req,res,next)=> {
+    try{
+        const checklist = await Checklist.updateOne({...req.body});
+        res.send(checklist);
     }
     catch(err){
         next(err);

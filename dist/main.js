@@ -29858,7 +29858,10 @@ __webpack_require__.r(__webpack_exports__);
 
 const ChecklistDetail = prop => {
   const date = new Date(prop.checklistObj.updatedAt);
+  const [viewUpdate, setViewUpdate] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
   const dispatch = (0,react_redux__WEBPACK_IMPORTED_MODULE_1__.useDispatch)();
+
+  //button function to delete checklist
   const deleteButton = ev => {
     ev.preventDefault();
     dispatch((0,_store_checklist__WEBPACK_IMPORTED_MODULE_2__.deleteChecklist)(prop.checklistObj));
@@ -29867,7 +29870,13 @@ const ChecklistDetail = prop => {
       checklistObj: null
     });
   };
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_3__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_4__["default"], {
+
+  //set viewupdate to true and display UpdateForm component to update checklist
+  const updateButton = ev => {
+    ev.preventDefault();
+    setViewUpdate(true);
+  };
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, !viewUpdate ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_3__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_4__["default"], {
     variant: "outlined",
     sx: {
       borderWidth: '10px',
@@ -29929,7 +29938,8 @@ const ChecklistDetail = prop => {
     variant: "outlined",
     sx: {
       width: 'min-content'
-    }
+    },
+    onClick: updateButton
   }, "Edit")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_3__["default"], {
     sx: {
       display: 'flex',
@@ -29941,7 +29951,7 @@ const ChecklistDetail = prop => {
     sx: {
       width: 'min-content'
     }
-  }, "Completed")))));
+  }, "Completed")))) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h1", null, "View Update Form"));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ChecklistDetail);
 
@@ -30416,7 +30426,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "addChecklist": () => (/* binding */ addChecklist),
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
 /* harmony export */   "deleteChecklist": () => (/* binding */ deleteChecklist),
-/* harmony export */   "fetchChecklist": () => (/* binding */ fetchChecklist)
+/* harmony export */   "fetchChecklist": () => (/* binding */ fetchChecklist),
+/* harmony export */   "updateChecklist": () => (/* binding */ updateChecklist)
 /* harmony export */ });
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
 
@@ -30476,6 +30487,19 @@ const deleteChecklist = checklistObj => {
     });
   };
 };
+const updateChecklist = checklistObj => {
+  return async dispatch => {
+    const token = window.localStorage.getItem('token');
+    const response = await axios__WEBPACK_IMPORTED_MODULE_0__["default"].put('/api/checklist/put', checklistObj, {
+      headers: {
+        authorization: token
+      }
+    });
+    console.log(response.data);
+    //dispatch here
+  };
+};
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (checklist);
 
 /***/ }),
@@ -30495,7 +30519,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "fetchChecklist": () => (/* reexport safe */ _checklist__WEBPACK_IMPORTED_MODULE_2__.fetchChecklist),
 /* harmony export */   "loginWithToken": () => (/* reexport safe */ _auth__WEBPACK_IMPORTED_MODULE_1__.loginWithToken),
 /* harmony export */   "logout": () => (/* reexport safe */ _auth__WEBPACK_IMPORTED_MODULE_1__.logout),
-/* harmony export */   "store": () => (/* binding */ store)
+/* harmony export */   "store": () => (/* binding */ store),
+/* harmony export */   "updateChecklist": () => (/* reexport safe */ _checklist__WEBPACK_IMPORTED_MODULE_2__.updateChecklist)
 /* harmony export */ });
 /* harmony import */ var _reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js");
 /* harmony import */ var redux_thunk__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! redux-thunk */ "./node_modules/redux-thunk/es/index.js");

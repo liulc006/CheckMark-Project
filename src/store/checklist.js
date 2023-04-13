@@ -54,5 +54,18 @@ export const deleteChecklist = (checklistObj) => {
     };
 };
 
+export const updateChecklist = (checklistObj) => {
+    return async(dispatch) => {
+        const token = window.localStorage.getItem('token');
+        const response = await axios.put('/api/checklist/put', checklistObj,{
+            headers:{
+                authorization: token
+            }
+        });
+        console.log(response.data)
+        //dispatch here
+    };
+};
+
 
 export default checklist;
