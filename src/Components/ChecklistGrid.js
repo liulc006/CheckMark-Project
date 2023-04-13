@@ -118,7 +118,7 @@ const ChecklistGrid = () => {
                     <Button onClick={handleCloseModal} sx={{position:'absolute', left:'92.5%', bottom:'90%'}}>
                         <CancelTwoToneIcon sx={{color:'white'}}/>
                     </Button>
-                    <ChecklistDetail key='modal checklist' checklistObj={viewChecklist.checklistObj}/>
+                    <ChecklistDetail key='modal checklist' checklistObj={viewChecklist.checklistObj} setView={setViewChecklist}/>
                 </Box>
             </Modal>
             <Modal key='form modal'

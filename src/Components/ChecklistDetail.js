@@ -3,10 +3,19 @@ import { Typography, Box, Card,
     CardActions, CardContent, Button, 
     Chip, Stack, CardActionArea
 } from "@mui/material";
+import { useDispatch } from "react-redux";
+import { deleteChecklist } from "../store/checklist";
 
 const ChecklistDetail = (prop) => {
     const date = new Date(prop.checklistObj.updatedAt);
+
+    const dispatch = useDispatch();
     
+    const deleteButton = (ev) => {
+        ev.preventDefault();
+        dispatch(deleteChecklist(prop.checklistObj));
+        prop.setView({view: false, checklistObj: null})
+    };
 
     return (
         <>
@@ -45,9 +54,13 @@ const ChecklistDetail = (prop) => {
                         })}
                     </Stack>
                 </CardContent>
-                {/* <CardActions>
-                    <Button variant="outlined">Completed?</Button>
-                </CardActions> */}
+                <Box sx={{display:'flex', flexDirection:'row',justifyContent:'space-around'}}>
+                    <Button variant="outlined" sx={{width:'min-content'}} onClick={deleteButton} >Delete</Button>
+                    <Button variant="outlined" sx={{width:'min-content'}}>Edit</Button>
+                </Box>
+                <Box sx={{display:'flex', flexDirection:'row',justifyContent:'center'}}>
+                    <Button variant="outlined" sx={{width:'min-content'}}>Completed</Button>
+                </Box>
             </Card>
         </Box>
         </>

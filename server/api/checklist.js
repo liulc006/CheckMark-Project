@@ -25,4 +25,14 @@ app.post('/add', isLoggedIn, async(req,res,next) => {
     };
 });
 
+app.delete('/delete', isLoggedIn, async(req,res,next)=> {
+    try{
+        const checklist = await Checklist.deleteOne({_id: req.body._id, userId:req.user});
+        res.sendStatus(200)
+    }
+    catch(err){
+        next(err);
+    };
+});
+
 module.exports = app;

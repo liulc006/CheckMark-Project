@@ -7,6 +7,10 @@ const checklist = (state=[], action) => {
     else if(action.type === 'ADD_CHECKLIST'){
         return [...state, action.checklist];
     }
+    else if(action.type === 'DELETE_CHECKLIST'){
+        return state.filter(ele => ele._id !== action.checklist._id)
+    }
+
     return state;
 };
 
@@ -20,9 +24,9 @@ export const fetchChecklist = () => {
                 }
             });
             dispatch({type:'FETCH_CHECKLIST', checklist: response.data});
-        }
-    }
-}
+        };
+    };
+};
 
 export const addChecklist = (newChecklist) => {
     return async(dispatch) => {
@@ -32,9 +36,23 @@ export const addChecklist = (newChecklist) => {
                 authorization: token
             }
         });
-        console.log(response.data);
         dispatch({type: 'ADD_CHECKLIST', checklist: response.data});
-    }
-}
+    };
+};
+
+export const deleteChecklist = (checklistObj) => {
+    return async(dispatch) => {
+        const token = window.localStorage.getItem('token');
+        await axios.delete('/api/checklist/delete', {
+            headers:{
+                authorization: token
+            },
+            data: checklistObj
+        });
+
+        dispatch({type:'DELETE_CHECKLIST', checklist: checklistObj})
+    };
+};
+
 
 export default checklist;

@@ -29843,17 +29843,31 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/Box/Box.js");
-/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/Card/Card.js");
-/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/CardContent/CardContent.js");
-/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/Typography/Typography.js");
-/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/Stack/Stack.js");
-/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/Chip/Chip.js");
+/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/Box/Box.js");
+/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/Card/Card.js");
+/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/CardContent/CardContent.js");
+/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/Typography/Typography.js");
+/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/Stack/Stack.js");
+/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/Chip/Chip.js");
+/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/Button/Button.js");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var _store_checklist__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../store/checklist */ "./src/store/checklist.js");
+
+
 
 
 const ChecklistDetail = prop => {
   const date = new Date(prop.checklistObj.updatedAt);
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_1__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_2__["default"], {
+  const dispatch = (0,react_redux__WEBPACK_IMPORTED_MODULE_1__.useDispatch)();
+  const deleteButton = ev => {
+    ev.preventDefault();
+    dispatch((0,_store_checklist__WEBPACK_IMPORTED_MODULE_2__.deleteChecklist)(prop.checklistObj));
+    prop.setView({
+      view: false,
+      checklistObj: null
+    });
+  };
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_3__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_4__["default"], {
     variant: "outlined",
     sx: {
       borderWidth: '10px',
@@ -29861,21 +29875,21 @@ const ChecklistDetail = prop => {
       display: 'flex',
       flexDirection: 'column'
     }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_3__["default"], {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
     sx: {
       display: 'flex',
       flexDirection: 'column'
     }
-  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_4__["default"], {
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], {
     sx: {
       fontSize: 10
     }
-  }, "Updated On: ", date.toLocaleString()), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_4__["default"], {
+  }, "Updated On: ", date.toLocaleString()), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], {
     sx: {
       fontSize: 15,
       color: prop.checklistObj.status === 'open' ? 'red' : 'green'
     }
-  }, "Status: ", prop.checklistObj.status), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_4__["default"], {
+  }, "Status: ", prop.checklistObj.status), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], {
     sx: {
       fontSize: 15
     }
@@ -29883,23 +29897,51 @@ const ChecklistDetail = prop => {
     style: {
       color: prop.checklistObj.priorityLevel === "high" ? "red" : prop.checklistObj.priorityLevel === "medium" ? "orange" : "gold"
     }
-  }, prop.checklistObj.priorityLevel)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_4__["default"], {
+  }, prop.checklistObj.priorityLevel)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], {
     sx: {
       fontSize: 20
     }
-  }, prop.checklistObj.description), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
+  }, prop.checklistObj.description), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], {
     direction: "row",
     spacing: "1",
     sx: {
       justifyContent: 'right'
     }
   }, prop.checklistObj.tags.map(ele => {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], {
+    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
       key: ele,
       variant: "outlined",
       label: ele
     });
-  }))))));
+  }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    sx: {
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'space-around'
+    }
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_9__["default"], {
+    variant: "outlined",
+    sx: {
+      width: 'min-content'
+    },
+    onClick: deleteButton
+  }, "Delete"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_9__["default"], {
+    variant: "outlined",
+    sx: {
+      width: 'min-content'
+    }
+  }, "Edit")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    sx: {
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'center'
+    }
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_9__["default"], {
+    variant: "outlined",
+    sx: {
+      width: 'min-content'
+    }
+  }, "Completed")))));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ChecklistDetail);
 
@@ -30075,7 +30117,8 @@ const ChecklistGrid = () => {
     }
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ChecklistDetail__WEBPACK_IMPORTED_MODULE_5__["default"], {
     key: "modal checklist",
-    checklistObj: viewChecklist.checklistObj
+    checklistObj: viewChecklist.checklistObj,
+    setView: setViewChecklist
   }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material_Modal__WEBPACK_IMPORTED_MODULE_13__["default"], {
     key: "form modal",
     open: viewForm,
@@ -30372,6 +30415,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "addChecklist": () => (/* binding */ addChecklist),
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
+/* harmony export */   "deleteChecklist": () => (/* binding */ deleteChecklist),
 /* harmony export */   "fetchChecklist": () => (/* binding */ fetchChecklist)
 /* harmony export */ });
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
@@ -30381,6 +30425,8 @@ const checklist = (state = [], action) => {
     return action.checklist;
   } else if (action.type === 'ADD_CHECKLIST') {
     return [...state, action.checklist];
+  } else if (action.type === 'DELETE_CHECKLIST') {
+    return state.filter(ele => ele._id !== action.checklist._id);
   }
   return state;
 };
@@ -30398,6 +30444,7 @@ const fetchChecklist = () => {
         checklist: response.data
       });
     }
+    ;
   };
 };
 const addChecklist = newChecklist => {
@@ -30408,10 +30455,24 @@ const addChecklist = newChecklist => {
         authorization: token
       }
     });
-    console.log(response.data);
     dispatch({
       type: 'ADD_CHECKLIST',
       checklist: response.data
+    });
+  };
+};
+const deleteChecklist = checklistObj => {
+  return async dispatch => {
+    const token = window.localStorage.getItem('token');
+    await axios__WEBPACK_IMPORTED_MODULE_0__["default"]["delete"]('/api/checklist/delete', {
+      headers: {
+        authorization: token
+      },
+      data: checklistObj
+    });
+    dispatch({
+      type: 'DELETE_CHECKLIST',
+      checklist: checklistObj
     });
   };
 };
@@ -30430,6 +30491,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "addChecklist": () => (/* reexport safe */ _checklist__WEBPACK_IMPORTED_MODULE_2__.addChecklist),
 /* harmony export */   "attemptLogin": () => (/* reexport safe */ _auth__WEBPACK_IMPORTED_MODULE_1__.attemptLogin),
+/* harmony export */   "deleteChecklist": () => (/* reexport safe */ _checklist__WEBPACK_IMPORTED_MODULE_2__.deleteChecklist),
 /* harmony export */   "fetchChecklist": () => (/* reexport safe */ _checklist__WEBPACK_IMPORTED_MODULE_2__.fetchChecklist),
 /* harmony export */   "loginWithToken": () => (/* reexport safe */ _auth__WEBPACK_IMPORTED_MODULE_1__.loginWithToken),
 /* harmony export */   "logout": () => (/* reexport safe */ _auth__WEBPACK_IMPORTED_MODULE_1__.logout),
