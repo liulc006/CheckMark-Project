@@ -1,14 +1,16 @@
 import React, {useState} from "react";
 import { Typography, Box, Card, 
-    CardActions, CardContent, Button, 
-    Chip, Stack, CardActionArea
+    FormControlLabel, CardContent, Button, 
+    Chip, Stack, Checkbox
 } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { deleteChecklist } from "../store/checklist";
+import { deleteChecklist, updateChecklist } from "../store/checklist";
+import ChecklistUpdate from "./ChecklistUpdate";
 
 const ChecklistDetail = (prop) => {
     const date = new Date(prop.checklistObj.updatedAt);
     const [viewUpdate, setViewUpdate] = useState(false);
+    const [status, setStatus] = useState(prop.checklistObj.status==='open'?false:true);
 
     const dispatch = useDispatch();
     
@@ -16,13 +18,19 @@ const ChecklistDetail = (prop) => {
     const deleteButton = (ev) => {
         ev.preventDefault();
         dispatch(deleteChecklist(prop.checklistObj));
-        prop.setView({view: false, checklistObj: null})
+        prop.setView({view: false, checklistObj: null});
     };
 
     //set viewupdate to true and display UpdateForm component to update checklist
     const updateButton = (ev) => {
         ev.preventDefault();
         setViewUpdate(true);
+    };
+
+    const statusChange = (ev) => {
+        setStatus(ev.target.checked);
+        dispatch(updateChecklist({_id: prop.checklistObj._id, 
+            status: ev.target.checked?'close':'open'}));
     };
 
     return (
@@ -67,12 +75,19 @@ const ChecklistDetail = (prop) => {
                     <Button variant="outlined" sx={{width:'min-content'}} onClick={updateButton}>Edit</Button>
                 </Box>
                 <Box sx={{display:'flex', flexDirection:'row',justifyContent:'center'}}>
-                    <Button variant="outlined" sx={{width:'min-content'}}>Completed</Button>
+                    <FormControlLabel
+                        control={<Checkbox 
+                            onChange={statusChange}
+                            checked={status}
+                        />}
+                        label="Completed?"
+                        labelPlacement="start"
+                    />
                 </Box>
             </Card>
         </Box>
         :
-        <h1>View Update Form</h1>
+        <ChecklistUpdate checklistObj={prop.checklistObj} setView={prop.setView}/>
         }
         </>
     );

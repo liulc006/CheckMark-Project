@@ -10,6 +10,9 @@ const checklist = (state=[], action) => {
     else if(action.type === 'DELETE_CHECKLIST'){
         return state.filter(ele => ele._id !== action.checklist._id)
     }
+    else if(action.type === 'UPDATE_CHECKLIST'){
+        return state.map(ele => ele._id === action.checklist._id ? action.checklist:ele, {});
+    }
 
     return state;
 };
@@ -57,13 +60,12 @@ export const deleteChecklist = (checklistObj) => {
 export const updateChecklist = (checklistObj) => {
     return async(dispatch) => {
         const token = window.localStorage.getItem('token');
-        const response = await axios.put('/api/checklist/put', checklistObj,{
+        const response = await axios.put('/api/checklist/update', checklistObj,{
             headers:{
                 authorization: token
             }
         });
-        console.log(response.data)
-        //dispatch here
+        dispatch({type:'UPDATE_CHECKLIST', checklist: response.data});
     };
 };
 

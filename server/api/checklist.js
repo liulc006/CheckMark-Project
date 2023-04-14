@@ -29,7 +29,7 @@ app.post('/add', isLoggedIn, async(req,res,next) => {
 app.delete('/delete', isLoggedIn, async(req,res,next)=> {
     try{
         await Checklist.deleteOne({_id: req.body._id, userId:req.user});
-        res.sendStatus(200)
+        res.sendStatus(200);
     }
     catch(err){
         next(err);
@@ -38,8 +38,10 @@ app.delete('/delete', isLoggedIn, async(req,res,next)=> {
 
 app.put('/update', isLoggedIn, async(req,res,next)=> {
     try{
-        const checklist = await Checklist.updateOne({...req.body});
-        res.send(checklist);
+        const checklist = await Checklist.findById(req.body._id);
+        await checklist.updateOne(req.body);
+        const updatedChecklist = await Checklist.findById(req.body._id);
+        res.send(updatedChecklist);
     }
     catch(err){
         next(err);

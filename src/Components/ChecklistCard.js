@@ -1,12 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import { Typography, Box, Card, 
-    CardActions, CardContent, Button, 
-    Chip, Stack, CardActionArea
+    FormControlLabel, CardContent, Checkbox, 
+    Chip, Stack,
 } from "@mui/material";
+import { useDispatch } from "react-redux";
+import { updateChecklist } from "../store/checklist";
 
 const ChecklistCard = (prop) => {
     const date = new Date(prop.checklistObj.updatedAt);
-    
+    const [status, setStatus] = useState(prop.checklistObj.status==='open'?false:true);
+    const dispatch = useDispatch();
+
+    const statusChange = (ev) => {
+        ev.stopPropagation();
+        setStatus(ev.target.checked);
+        dispatch(updateChecklist({_id: prop.checklistObj._id, 
+            status: ev.target.checked?'close':'open'}));
+    };
 
     return (
         <>
@@ -32,9 +42,16 @@ const ChecklistCard = (prop) => {
                         })}
                     </Stack>
                 </CardContent>
-                {/* <CardActions>
-                    <Button variant="outlined">Completed?</Button>
-                </CardActions> */}
+                <Box sx={{display:'flex', flexDirection:'row',justifyContent:'center'}}>
+                    <FormControlLabel
+                        control={<Checkbox 
+                            onClick={statusChange}
+                            checked={status}
+                        />}
+                        label="Completed?"
+                        labelPlacement="start"
+                    />
+                </Box>
             </Card>
         </Box>
         </>
