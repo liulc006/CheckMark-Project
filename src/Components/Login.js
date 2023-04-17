@@ -76,6 +76,7 @@ const Login = () => {
                         <OutlinedInput
                             id="password"
                             type={view ? 'text' : 'password'}
+                            name='password'
                             endAdornment={
                                 <InputAdornment position="end">
                                 <IconButton

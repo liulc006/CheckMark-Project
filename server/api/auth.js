@@ -15,7 +15,16 @@ app.post('/', async(req, res, next)=>{
 
 app.get('/', isLoggedIn, (req,res, next)=>{
     try{
-        res.send(req.user)
+        res.send(req.user);
+    }
+    catch(err){
+        next(err);
+    };
+});
+
+app.post('/register', async(req, res, next)=> {
+    try{
+        res.send(await User.create(req.body));
     }
     catch(err){
         next(err);

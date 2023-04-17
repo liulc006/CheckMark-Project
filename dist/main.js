@@ -31697,6 +31697,7 @@ const Login = () => {
   }, "Password"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_9__["default"], {
     id: "password",
     type: view ? 'text' : 'password',
+    name: "password",
     endAdornment: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_10__["default"], {
       position: "end"
     }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_11__["default"], {
@@ -31840,17 +31841,22 @@ const Register = () => {
   const handleMouseDownPassword = event => {
     event.preventDefault();
   };
-  const login = ev => {
+  const signup = ev => {
     ev.preventDefault();
     setErrorMessage(null);
-    dispatch((0,_store__WEBPACK_IMPORTED_MODULE_2__.attemptLogin)(credential)).catch(err => {
-      if (err.response.status === 404) {
-        setErrorMessage('Account Not Found! Please use a valid email.');
-      } else if (err.response.status === 401) {
-        setErrorMessage('Bad Credential! Account and Password do not match.');
-      }
-    });
+    credential.email = credential.email.toLowerCase();
+    dispatch((0,_store__WEBPACK_IMPORTED_MODULE_2__.createUser)(credential));
+    // dispatch(attemptLogin(credential))
+    //     .catch((err)=>{
+    //         if(err.response.status === 404){
+    //             setErrorMessage('Account Not Found! Please use a valid email.')
+    //         }
+    //         else if (err.response.status === 401){
+    //             setErrorMessage('Bad Credential! Account and Password do not match.')
+    //         }
+    //     });
   };
+
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_3__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_3__["default"], {
     component: "img",
     alt: "background-image",
@@ -31925,7 +31931,8 @@ const Register = () => {
     sx: {
       margin: '5px',
       width: '20rem'
-    }
+    },
+    required: true
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], {
     sx: {
       margin: '5px',
@@ -31933,11 +31940,13 @@ const Register = () => {
     },
     variant: "outlined",
     value: credential.password,
-    onChange: typing
+    onChange: typing,
+    required: true
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], {
     htmlFor: "password"
   }, "Password"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_9__["default"], {
     id: "password",
+    name: "password",
     type: view ? 'text' : 'password',
     endAdornment: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_10__["default"], {
       position: "end"
@@ -31951,7 +31960,7 @@ const Register = () => {
     variant: "outlined"
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_14__["default"], {
     variant: "contained",
-    onClick: login,
+    onClick: signup,
     sx: {
       margin: '5px',
       width: '20rem'
@@ -31974,6 +31983,7 @@ const Register = () => {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "attemptLogin": () => (/* binding */ attemptLogin),
+/* harmony export */   "createUser": () => (/* binding */ createUser),
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
 /* harmony export */   "loginWithToken": () => (/* binding */ loginWithToken),
 /* harmony export */   "logout": () => (/* binding */ logout)
@@ -32020,6 +32030,14 @@ const attemptLogin = credential => {
     const token = await axios__WEBPACK_IMPORTED_MODULE_0__["default"].post('/api/auth', credential);
     window.localStorage.setItem('token', token.data);
     dispatch(loginWithToken());
+  };
+};
+
+//Add new users to database
+const createUser = credential => {
+  return async dispatch => {
+    const token = await axios__WEBPACK_IMPORTED_MODULE_0__["default"].post('/api/auth/register', credential);
+    console.log(token);
   };
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (auth);
@@ -32130,6 +32148,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "addChecklist": () => (/* reexport safe */ _checklist__WEBPACK_IMPORTED_MODULE_2__.addChecklist),
 /* harmony export */   "attemptLogin": () => (/* reexport safe */ _auth__WEBPACK_IMPORTED_MODULE_1__.attemptLogin),
+/* harmony export */   "createUser": () => (/* reexport safe */ _auth__WEBPACK_IMPORTED_MODULE_1__.createUser),
 /* harmony export */   "deleteChecklist": () => (/* reexport safe */ _checklist__WEBPACK_IMPORTED_MODULE_2__.deleteChecklist),
 /* harmony export */   "fetchChecklist": () => (/* reexport safe */ _checklist__WEBPACK_IMPORTED_MODULE_2__.fetchChecklist),
 /* harmony export */   "loginWithToken": () => (/* reexport safe */ _auth__WEBPACK_IMPORTED_MODULE_1__.loginWithToken),
