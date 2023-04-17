@@ -2,12 +2,13 @@ import React, {useState} from "react";
 import { useDispatch } from 'react-redux';
 import { createUser } from '../store';
 import { TextField, Box, Button, Alert, Typography, InputAdornment, IconButton, InputLabel, OutlinedInput, FormControl } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 const Register = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const [ credential, setCredential ] = useState({
         email: '',
@@ -35,7 +36,7 @@ const Register = () => {
         ev.preventDefault();
         setErrorMessage(null);
         credential.email = credential.email.toLowerCase();
-        dispatch(createUser(credential));
+        dispatch(createUser(credential, navigate));
         // dispatch(attemptLogin(credential))
         //     .catch((err)=>{
         //         if(err.response.status === 404){

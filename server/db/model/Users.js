@@ -65,6 +65,11 @@ userSchema.statics.findByToken = async function(token) {
     }
 }
 
+userSchema.methods.generateToken = function(){
+    const token = jwt.sign({ email: this.email}, process.env.JWT_SECRET);
+    return token;
+}
+
 const User = model('User', userSchema);
 
 module.exports = User;

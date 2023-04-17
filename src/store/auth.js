@@ -39,10 +39,14 @@ export const attemptLogin = (credential) => {
 };
 
 //Add new users to database
-export const createUser = (credential) => {
+export const createUser = (credential, navigate) => {
     return async(dispatch) => {
         const token = await axios.post('/api/auth/register', credential);
         console.log(token);
+        window.localStorage.setItem('token', token.data);
+        //Login after creating a new user
+        dispatch(loginWithToken());
+        navigate('/');
     }
 }
 
