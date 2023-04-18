@@ -31847,18 +31847,12 @@ const Register = () => {
     ev.preventDefault();
     setErrorMessage(null);
     credential.email = credential.email.toLowerCase();
-    dispatch((0,_store__WEBPACK_IMPORTED_MODULE_2__.createUser)(credential, navigate));
-    // dispatch(attemptLogin(credential))
-    //     .catch((err)=>{
-    //         if(err.response.status === 404){
-    //             setErrorMessage('Account Not Found! Please use a valid email.')
-    //         }
-    //         else if (err.response.status === 401){
-    //             setErrorMessage('Bad Credential! Account and Password do not match.')
-    //         }
-    //     });
+    dispatch((0,_store__WEBPACK_IMPORTED_MODULE_2__.createUser)(credential, navigate)).catch(err => {
+      if (err.response.status === 500) {
+        setErrorMessage('Email Already in Use! Please Use Another Email!');
+      }
+    });
   };
-
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_4__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_4__["default"], {
     component: "img",
     alt: "background-image",

@@ -36,16 +36,12 @@ const Register = () => {
         ev.preventDefault();
         setErrorMessage(null);
         credential.email = credential.email.toLowerCase();
-        dispatch(createUser(credential, navigate));
-        // dispatch(attemptLogin(credential))
-        //     .catch((err)=>{
-        //         if(err.response.status === 404){
-        //             setErrorMessage('Account Not Found! Please use a valid email.')
-        //         }
-        //         else if (err.response.status === 401){
-        //             setErrorMessage('Bad Credential! Account and Password do not match.')
-        //         }
-        //     });
+        dispatch(createUser(credential, navigate))
+            .catch((err)=> {
+                if(err.response.status === 500){
+                    setErrorMessage('Email Already in Use! Please Use Another Email!')
+                }
+            });
     };
 
     return (

@@ -24,7 +24,8 @@ app.get('/', isLoggedIn, (req,res, next)=>{
 
 app.post('/register', async(req, res, next)=> {
     try{
-        const user = await User.create(req.body);
+        const user = await User.init()
+            .then(()=>User.create(req.body));
         //sign in with token after registering
         res.send(user.generateToken());
     }
