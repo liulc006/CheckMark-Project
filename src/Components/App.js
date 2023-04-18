@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import Home from './Home';
 import Nav from './Nav';
 import { Routes, Route } from 'react-router-dom';
+import Register from './Register';
 
 
 const App = () => {
@@ -22,6 +23,7 @@ const App = () => {
             {auth._id? <Nav/>:null}
             <Routes>
                 <Route path='/' element={<Home/>} />
+                <Route path='/register' element={<Register/>}/>
                 <Route path='*' element={<h1>Error! Go Back</h1>} />
             </Routes>
         </>

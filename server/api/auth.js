@@ -15,7 +15,19 @@ app.post('/', async(req, res, next)=>{
 
 app.get('/', isLoggedIn, (req,res, next)=>{
     try{
-        res.send(req.user)
+        res.send(req.user);
+    }
+    catch(err){
+        next(err);
+    };
+});
+
+app.post('/register', async(req, res, next)=> {
+    try{
+        const user = await User.init()
+            .then(()=>User.create(req.body));
+        //sign in with token after registering
+        res.send(user.generateToken());
     }
     catch(err){
         next(err);
