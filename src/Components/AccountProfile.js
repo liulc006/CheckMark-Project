@@ -14,8 +14,18 @@ const AccountProfile = () => {
         email: auth.email,
     });
 
+    //Show the view of the edit form
     const editProfile = () => {
          setViewForm(true);
+    };
+
+    const changeHandler = (ev) => {
+        setInput({...input, [ev.target.name]: ev.target.value});
+    };
+
+    //Submit the changes
+    const submitEdit = () => {
+        console.log(input);
     };
 
     return(
@@ -30,7 +40,7 @@ const AccountProfile = () => {
                         placeholder="Enter Your First Name"
                         name="firstName"
                         value={input.firstName}
-                        // onChange={changeHandler}
+                        onChange={changeHandler}
                     />
                 </Box>
                 <Divider/>
@@ -40,7 +50,7 @@ const AccountProfile = () => {
                         placeholder="Enter Your Last Name"
                         name="firstName"
                         value={input.lastName}
-                        // onChange={changeHandler}
+                        onChange={changeHandler}
                     />                
                 </Box>
                 <Divider/>
@@ -50,7 +60,7 @@ const AccountProfile = () => {
                         placeholder="Enter Your Email"
                         name="firstName"
                         value={input.email}
-                        // onChange={changeHandler}
+                        onChange={changeHandler}
                     />                
                 </Box>
                 <Divider/>
@@ -59,7 +69,7 @@ const AccountProfile = () => {
                     <Typography sx={{width:'50%'}}>********</Typography>
                 </Box>
                 <Divider/>
-                <Button variant='outlined'>CONFIRM</Button>
+                <Button variant='outlined' sx={{marginTop:'1rem'}} onClick={submitEdit}>CONFIRM</Button>
             </Box>    
             :
             <Box sx={{display:'flex', flexDirection:'column', border:'black 1px solid', borderRadius:'5%',padding:'2rem', width:'50%', backgroundColor:'aliceblue'}}>
@@ -83,7 +93,7 @@ const AccountProfile = () => {
                     <Typography sx={{width:'50%'}}>********</Typography>
                 </Box>
                 <Divider/>
-                <Button variant='outlined' onClick={editProfile}>EDIT</Button>
+                <Button variant='outlined' sx={{marginTop:'1rem'}} onClick={editProfile}>EDIT</Button>
             </Box>
             }
         </div>
