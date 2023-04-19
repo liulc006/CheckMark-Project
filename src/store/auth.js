@@ -7,10 +7,11 @@ const auth = (state = {}, action) =>{
     return state;
 };
 
-export const logout = () => {
+export const logout = (navigate) => {
     return async(dispatch) => {
         window.localStorage.removeItem('token');
         dispatch({type: 'SET_AUTH', auth:{} });
+        navigate('/')
     };
 };
 
@@ -47,7 +48,7 @@ export const createUser = (credential, navigate) => {
         //Login after creating a new user
         dispatch(loginWithToken());
         navigate('/');
-    }
-}
+    };
+};
 
 export default auth;

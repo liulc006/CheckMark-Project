@@ -19,7 +19,7 @@ app.use('/api/checklist', require('./api/checklist'));
 
 const init = async() => {
     try{
-        await syncAndSeed();
+        // await syncAndSeed();
         const PORT = process.env.PORT || 3000;
         app.listen(PORT, ()=> console.log(`listening to port ${PORT}`))
     }

@@ -6,6 +6,7 @@ import Home from './Home';
 import Nav from './Nav';
 import { Routes, Route } from 'react-router-dom';
 import Register from './Register';
+import AccountProfile from './AccountProfile';
 
 
 const App = () => {
@@ -24,6 +25,7 @@ const App = () => {
             <Routes>
                 <Route path='/' element={<Home/>} />
                 <Route path='/register' element={<Register/>}/>
+                <Route path='/account/:id' element={<AccountProfile />} />
                 <Route path='*' element={<h1>Error! Go Back</h1>} />
             </Routes>
         </>
