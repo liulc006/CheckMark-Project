@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Box, Typography, Divider, Button, TextField } from "@mui/material";
 import { useSelector } from "react-redux";
@@ -14,12 +14,21 @@ const AccountProfile = () => {
         email: auth.email,
     });
 
+    useEffect(()=>{
+        setInput({
+            firstName: auth.firstName,
+            lastName: auth.lastName,
+            email: auth.email, 
+        })
+    }, [auth]);
+
     //Show the view of the edit form
     const editProfile = () => {
          setViewForm(true);
     };
 
     const changeHandler = (ev) => {
+        ev.preventDefault()
         setInput({...input, [ev.target.name]: ev.target.value});
     };
 
@@ -48,7 +57,7 @@ const AccountProfile = () => {
                     <Typography sx={{width:'50%', color:'gray'}}>Last Name</Typography> 
                     <TextField 
                         placeholder="Enter Your Last Name"
-                        name="firstName"
+                        name="lastName"
                         value={input.lastName}
                         onChange={changeHandler}
                     />                
@@ -58,7 +67,7 @@ const AccountProfile = () => {
                     <Typography sx={{width:'50%', color:'gray'}}>Email</Typography> 
                     <TextField 
                         placeholder="Enter Your Email"
-                        name="firstName"
+                        name="email"
                         value={input.email}
                         onChange={changeHandler}
                     />                

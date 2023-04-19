@@ -31160,12 +31160,20 @@ const AccountProfile = () => {
     lastName: auth.lastName,
     email: auth.email
   });
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    setInput({
+      firstName: auth.firstName,
+      lastName: auth.lastName,
+      email: auth.email
+    });
+  }, [auth]);
 
   //Show the view of the edit form
   const editProfile = () => {
     setViewForm(true);
   };
   const changeHandler = ev => {
+    ev.preventDefault();
     setInput({
       ...input,
       [ev.target.name]: ev.target.value
@@ -31227,7 +31235,7 @@ const AccountProfile = () => {
     }
   }, "Last Name"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
     placeholder: "Enter Your Last Name",
-    name: "firstName",
+    name: "lastName",
     value: input.lastName,
     onChange: changeHandler
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_4__["default"], {
@@ -31243,7 +31251,7 @@ const AccountProfile = () => {
     }
   }, "Email"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], {
     placeholder: "Enter Your Email",
-    name: "firstName",
+    name: "email",
     value: input.email,
     onChange: changeHandler
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_mui_material__WEBPACK_IMPORTED_MODULE_4__["default"], {
