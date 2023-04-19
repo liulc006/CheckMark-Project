@@ -1,16 +1,68 @@
-import React from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
-import { Box, Typography, Divider} from "@mui/material";
+import { Box, Typography, Divider, Button, TextField } from "@mui/material";
 import { useSelector } from "react-redux";
 
 const AccountProfile = () => {
     const { id }= useParams();
-    const { auth } = useSelector(state=>state)
+    const { auth } = useSelector(state=>state);
+    const [ viewForm, setViewForm ] = useState(false);
+
+    const [ input, setInput ] = useState({
+        firstName: auth.firstName,
+        lastName: auth.lastName,
+        email: auth.email,
+    });
+
+    const editProfile = () => {
+         setViewForm(true);
+    };
 
     return(
         <div style={{display:'flex', flexDirection:'column', alignItems:'center'}}>
-            <Typography>Account Profile</Typography>
-            <Box sx={{display:'flex', flexDirection:'column', border:'black 1px solid', borderRadius:'5%',padding:'2rem', width:' 40%', backgroundColor:'aliceblue'}}>
+            <Typography sx={{fontSize:'20', fontWeight:'bold', margin:'2rem'}}>Account Profile</Typography>
+
+            {viewForm ? 
+            <Box sx={{display:'flex', flexDirection:'column', border:'black 1px solid', borderRadius:'5%',padding:'2rem', width:'50%', backgroundColor:'aliceblue'}}>
+                <Box sx={{display:'flex', flexDirection:'row', margin:'1rem'}}>
+                    <Typography sx={{width:'50%', color:'gray'}}>First Name</Typography> 
+                    <TextField 
+                        placeholder="Enter Your First Name"
+                        name="firstName"
+                        value={input.firstName}
+                        // onChange={changeHandler}
+                    />
+                </Box>
+                <Divider/>
+                <Box sx={{display:'flex', flexDirection:'row', margin:'1rem'}}>
+                    <Typography sx={{width:'50%', color:'gray'}}>Last Name</Typography> 
+                    <TextField 
+                        placeholder="Enter Your Last Name"
+                        name="firstName"
+                        value={input.lastName}
+                        // onChange={changeHandler}
+                    />                
+                </Box>
+                <Divider/>
+                <Box sx={{display:'flex', flexDirection:'row', margin:'1rem'}}>
+                    <Typography sx={{width:'50%', color:'gray'}}>Email</Typography> 
+                    <TextField 
+                        placeholder="Enter Your Email"
+                        name="firstName"
+                        value={input.email}
+                        // onChange={changeHandler}
+                    />                
+                </Box>
+                <Divider/>
+                <Box sx={{display:'flex', flexDirection:'row', margin:'1rem'}}>
+                    <Typography sx={{width:'50%', color:'gray'}}>Password</Typography> 
+                    <Typography sx={{width:'50%'}}>********</Typography>
+                </Box>
+                <Divider/>
+                <Button variant='outlined'>CONFIRM</Button>
+            </Box>    
+            :
+            <Box sx={{display:'flex', flexDirection:'column', border:'black 1px solid', borderRadius:'5%',padding:'2rem', width:'50%', backgroundColor:'aliceblue'}}>
                 <Box sx={{display:'flex', flexDirection:'row', margin:'1rem'}}>
                     <Typography sx={{width:'50%', color:'gray'}}>First Name</Typography> 
                     <Typography sx={{width:'50%'}}>{auth.firstName ? auth.firstName : '-'}</Typography>
@@ -31,7 +83,9 @@ const AccountProfile = () => {
                     <Typography sx={{width:'50%'}}>********</Typography>
                 </Box>
                 <Divider/>
+                <Button variant='outlined' onClick={editProfile}>EDIT</Button>
             </Box>
+            }
         </div>
     )
 };
