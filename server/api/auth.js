@@ -34,4 +34,19 @@ app.post('/register', async(req, res, next)=> {
     };
 });
 
+app.put('/update', isLoggedIn, async(req,res,next)=>{
+    try{
+        await User.init()
+            .then(async() => {
+                const user = await User.findById(req.user._id);
+                await user.updateOne(req.body);
+            })
+        const updatedUser = await User.findById(req.user._id);
+        res.send(updatedUser);
+    }
+    catch(err){
+        next(err)
+    }
+})
+
 module.exports = app;

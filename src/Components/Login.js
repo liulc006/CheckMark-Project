@@ -54,7 +54,10 @@ const Login = () => {
                 src='../static/todolist.jpg'
                 sx={{height: '100vh', width:'100vw', objectFit: 'cover', position:'absolute', zIndex:'-1'}}
             />
-            <Box sx={{display:'flex', justifyContent:'center', alignItems:'center'}}>
+            <Box sx={{display:'flex', flexDirection:'column',justifyContent:'center', alignItems:'center'}}>
+                <Box component='img' src='../static/Nav-Logo.png'
+                sx={{height:'2rem', objectFit: 'contain', zIndex:'1'}}
+                />
                 <form style={{display:'flex', flexDirection:'column', margin:'5px', alignItems:'center', border:'black 1px solid', backgroundColor:'white',
                     borderRadius:'2%', padding:'2rem', marginTop:'15rem'
                 }}>

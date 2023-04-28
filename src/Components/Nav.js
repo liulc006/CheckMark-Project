@@ -23,6 +23,7 @@ const Nav = () => {
             <Box sx={{display:'flex', justifyContent:'center', alignItems:'center' ,marginRight:'1rem'}}>
                 {auth._id ?
                 <Box>
+                    <Link to='/'>Home</Link>
                     <IconButton sx={{marginRight:'1rem'}}>
                         <Link to={`/account/${auth._id}`} style={{color:'inherit'}}>
                             <AccountBoxIcon />

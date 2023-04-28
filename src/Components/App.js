@@ -7,7 +7,8 @@ import Nav from './Nav';
 import { Routes, Route } from 'react-router-dom';
 import Register from './Register';
 import AccountProfile from './AccountProfile';
-
+import AccountProfileUpdate from './AccountProfileUpdate';
+import AccountPasswordUpdate from './AccountPasswordUpdate';
 
 const App = () => {
     const dispatch = useDispatch();
@@ -26,6 +27,8 @@ const App = () => {
                 <Route path='/' element={<Home/>} />
                 <Route path='/register' element={<Register/>}/>
                 <Route path='/account/:id' element={<AccountProfile />} />
+                <Route path='/account/:id/update' element={<AccountProfileUpdate />} />
+                <Route path='/account/:id/update_password' element={<AccountPasswordUpdate/>} />
                 <Route path='*' element={<h1>Error! Go Back</h1>} />
             </Routes>
         </>
