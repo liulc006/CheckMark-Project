@@ -68,4 +68,20 @@ export const updateUser = (input, navigate) => {
     };
 };
 
+//Update Password
+export const updatePassword = (oldPassword, newPassword, navigate) => {
+    return async(dispatch) => {
+        const token = window.localStorage.getItem('token');
+        if(token){
+            const response = await axios.put('/api/auth/password', {oldPassword, newPassword}, {
+                headers:{
+                    authorization: token
+                }
+            });
+            dispatch({type:'SET_AUTH', auth: response.data});
+
+        }
+    }
+}
+
 export default auth;

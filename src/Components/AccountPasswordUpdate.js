@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Box, Typography, Divider, Button, TextField, Alert } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
-import { updateUser } from "../store";
+import { updatePassword } from "../store";
 
 const AccountPasswordUpdate = () => {
     const { id }= useParams();
@@ -20,16 +20,23 @@ const AccountPasswordUpdate = () => {
     //Submit the changes
     const submitEdit = () => {
         setErrorMessage(null);
-        if(newPassword !== checkPassword){
+        if(oldPassword.length===0 || newPassword.length===0){
+            setErrorMessage("Empty Field")
+        }
+        else if(newPassword !== checkPassword){
             setErrorMessage("Password DOES NOT match!");
         }
         else{
-            console.log('password change')
+            dispatch(updatePassword(oldPassword,newPassword, navigate))
+                .catch((err)=>{
+                    if(err.response.status === 401){
+                        setErrorMessage('Old Password is Wrong!');
+                    }
+                    else{
+                        setErrorMessage('Error!')
+                    }
+                });
         }
-        // dispatch(updateUser(input, navigate))
-        //     .catch((err)=>{
-        //         setErrorMessage('ERROR!');
-        //     });
     };
     
     return (        

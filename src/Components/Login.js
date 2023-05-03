@@ -36,6 +36,7 @@ const Login = () => {
     const login = (ev) => {
         ev.preventDefault();
         setErrorMessage(null);
+        credential.email = credential.email.toLowerCase();
         dispatch(attemptLogin(credential))
             .catch((err)=>{
                 if(err.response.status === 404){

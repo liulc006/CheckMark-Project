@@ -31167,17 +31167,20 @@ const AccountPasswordUpdate = () => {
   //Submit the changes
   const submitEdit = () => {
     setErrorMessage(null);
-    if (newPassword !== checkPassword) {
+    if (oldPassword.length === 0 || newPassword.length === 0) {
+      setErrorMessage("Empty Field");
+    } else if (newPassword !== checkPassword) {
       setErrorMessage("Password DOES NOT match!");
     } else {
-      console.log('password change');
+      dispatch((0,_store__WEBPACK_IMPORTED_MODULE_2__.updatePassword)(oldPassword, newPassword, navigate)).catch(err => {
+        if (err.response.status === 401) {
+          setErrorMessage('Old Password is Wrong!');
+        } else {
+          setErrorMessage('Error!');
+        }
+      });
     }
-    // dispatch(updateUser(input, navigate))
-    //     .catch((err)=>{
-    //         setErrorMessage('ERROR!');
-    //     });
   };
-
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     style: {
       display: 'flex',
@@ -31310,7 +31313,6 @@ const AccountProfile = () => {
 
   //change password form
   const changePassword = () => {
-    console.log('change password');
     navigate(`/account/${id}/update_password`);
   };
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
@@ -32398,6 +32400,7 @@ const Login = () => {
   const login = ev => {
     ev.preventDefault();
     setErrorMessage(null);
+    credential.email = credential.email.toLowerCase();
     dispatch((0,_store__WEBPACK_IMPORTED_MODULE_2__.attemptLogin)(credential)).catch(err => {
       if (err.response.status === 404) {
         setErrorMessage('Account Not Found! Please use a valid email.');
@@ -32790,6 +32793,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
 /* harmony export */   "loginWithToken": () => (/* binding */ loginWithToken),
 /* harmony export */   "logout": () => (/* binding */ logout),
+/* harmony export */   "updatePassword": () => (/* binding */ updatePassword),
 /* harmony export */   "updateUser": () => (/* binding */ updateUser)
 /* harmony export */ });
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
@@ -32868,6 +32872,27 @@ const updateUser = (input, navigate) => {
       navigate(`/account/${response.data._id}`);
     }
     ;
+  };
+};
+
+//Update Password
+const updatePassword = (oldPassword, newPassword, navigate) => {
+  return async dispatch => {
+    const token = window.localStorage.getItem('token');
+    if (token) {
+      const response = await axios__WEBPACK_IMPORTED_MODULE_0__["default"].put('/api/auth/password', {
+        oldPassword,
+        newPassword
+      }, {
+        headers: {
+          authorization: token
+        }
+      });
+      dispatch({
+        type: 'SET_AUTH',
+        auth: response.data
+      });
+    }
   };
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (auth);
@@ -32985,6 +33010,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "logout": () => (/* reexport safe */ _auth__WEBPACK_IMPORTED_MODULE_1__.logout),
 /* harmony export */   "store": () => (/* binding */ store),
 /* harmony export */   "updateChecklist": () => (/* reexport safe */ _checklist__WEBPACK_IMPORTED_MODULE_2__.updateChecklist),
+/* harmony export */   "updatePassword": () => (/* reexport safe */ _auth__WEBPACK_IMPORTED_MODULE_1__.updatePassword),
 /* harmony export */   "updateUser": () => (/* reexport safe */ _auth__WEBPACK_IMPORTED_MODULE_1__.updateUser)
 /* harmony export */ });
 /* harmony import */ var _reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js");

@@ -15,7 +15,6 @@ const AccountProfile = () => {
 
     //change password form
     const changePassword = () => {
-        console.log('change password');
         navigate(`/account/${id}/update_password`);
     };
 

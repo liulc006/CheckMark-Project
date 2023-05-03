@@ -19,7 +19,8 @@ const userSchema = new Schema({
 userSchema.pre('save', async function(next) {
     //Encrypt "password" before saving it into the database
     try{
-        const salt = process.env.JWT || await bcrypt.genSalt();
+        // const salt = process.env.JWT || await bcrypt.genSalt();
+        const salt = 5;
         this.password = await bcrypt.hash(this.password, salt);
         next();
     }

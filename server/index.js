@@ -19,7 +19,9 @@ app.use('/api/checklist', require('./api/checklist'));
 
 const init = async() => {
     try{
-        // await syncAndSeed();
+        if(process.env.DATABASE_URL === 'mongodb://localhost:27017/checkmark-app'){
+            await syncAndSeed();
+        }
         const PORT = process.env.PORT || 3000;
         app.listen(PORT, ()=> console.log(`listening to port ${PORT}`))
     }
