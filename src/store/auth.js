@@ -7,10 +7,11 @@ const auth = (state = {}, action) =>{
     return state;
 };
 
-export const logout = () => {
+export const logout = (navigate) => {
     return async(dispatch) => {
         window.localStorage.removeItem('token');
         dispatch({type: 'SET_AUTH', auth:{} });
+        navigate('/')
     };
 };
 
@@ -47,6 +48,39 @@ export const createUser = (credential, navigate) => {
         //Login after creating a new user
         dispatch(loginWithToken());
         navigate('/');
+    };
+};
+
+//Update user
+export const updateUser = (input, navigate) => {
+    return async(dispatch)=> {
+        const token = window.localStorage.getItem('token');
+        if(token){        
+            const response = await axios.put('/api/auth/update', input, {
+                headers:{
+                    authorization: token
+                }
+            });
+            //because AUTH is only a single object, we can substitute the current one with the new one => SET_AUTH
+            dispatch({type:'SET_AUTH', auth: response.data});
+            navigate(`/account/${response.data._id}`);
+        };
+    };
+};
+
+//Update Password
+export const updatePassword = (oldPassword, newPassword, navigate) => {
+    return async(dispatch) => {
+        const token = window.localStorage.getItem('token');
+        if(token){
+            const response = await axios.put('/api/auth/password', {oldPassword, newPassword}, {
+                headers:{
+                    authorization: token
+                }
+            });
+            dispatch({type:'SET_AUTH', auth: response.data});
+            navigate(`/account/${response.data._id}`);
+        }
     }
 }
 
