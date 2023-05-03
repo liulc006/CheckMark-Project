@@ -32,6 +32,9 @@ const AccountPasswordUpdate = () => {
         else if(newPassword !== checkPassword){
             setErrorMessage("Password DOES NOT match!");
         }
+        else if (newPassword===oldPassword){
+            setErrorMessage("Old Password and New Password are the SAME!");
+        }
         else{
             dispatch(updatePassword(oldPassword,newPassword, navigate))
                 .catch((err)=>{

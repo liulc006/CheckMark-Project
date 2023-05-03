@@ -79,7 +79,7 @@ export const updatePassword = (oldPassword, newPassword, navigate) => {
                 }
             });
             dispatch({type:'SET_AUTH', auth: response.data});
-
+            navigate(`/account/${response.data._id}`);
         }
     }
 }

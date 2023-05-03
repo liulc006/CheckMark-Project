@@ -31182,6 +31182,8 @@ const AccountPasswordUpdate = () => {
       setErrorMessage("Empty Field");
     } else if (newPassword !== checkPassword) {
       setErrorMessage("Password DOES NOT match!");
+    } else if (newPassword === oldPassword) {
+      setErrorMessage("Old Password and New Password are the SAME!");
     } else {
       dispatch((0,_store__WEBPACK_IMPORTED_MODULE_2__.updatePassword)(oldPassword, newPassword, navigate)).catch(err => {
         if (err.response.status === 401) {
@@ -32966,6 +32968,7 @@ const updatePassword = (oldPassword, newPassword, navigate) => {
         type: 'SET_AUTH',
         auth: response.data
       });
+      navigate(`/account/${response.data._id}`);
     }
   };
 };
