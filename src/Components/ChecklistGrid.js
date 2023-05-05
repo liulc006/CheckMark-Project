@@ -54,7 +54,7 @@ const ChecklistGrid = () => {
     };
 
     return (
-        <>
+        <Box sx={{height:'90vh'}}>
             <h1>Checklist:</h1>
             <Box sx={{
                 margin:'0 20 0 20'
@@ -129,7 +129,7 @@ const ChecklistGrid = () => {
                     <AddChecklistForm />
                 </>
             </Modal>
-        </>
+        </Box>
     );
 };
 

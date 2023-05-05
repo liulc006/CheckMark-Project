@@ -49,17 +49,17 @@ const Login = () => {
     };
 
     return (
-        <Box>
+        <Box sx={{height:'100vh'}}>
             <Box component='img' 
                 alt='background-image'
                 src='../static/todolist.jpg'
-                sx={{height: '100vh', width:'100vw', objectFit: 'cover', position:'absolute', zIndex:'-1'}}
+                sx={{height: '100vh', width:'100%', objectFit: 'cover', position:'absolute', zIndex:'-1'}}
             />
             <Box sx={{display:'flex', flexDirection:'column', justifyContent:'center', alignItems:'center'}}>
                 <Box component='img' src='../static/Nav-Logo.png'
                     sx={{height:'2rem', objectFit: 'contain', zIndex:'1'}}
                 />
-                <FormControl sx={{display:'flex', flexDirection:'column', margin:'5px', alignItems:'center', border:'black 1px solid', backgroundColor:'white',
+                <FormControl onSubmit={login} sx={{display:'flex', flexDirection:'column', margin:'5px', alignItems:'center', border:'black 1px solid', backgroundColor:'white',
                     borderRadius:'2%', padding:'2rem', marginTop:'15rem', maxWidth: {xs:250, md:400}
                 }}>
                     <Typography variant='h5' sx={{textAlign:'center'}}>Welcome to CheckMark!</Typography>
@@ -97,7 +97,7 @@ const Login = () => {
                             variant='outlined'
                         />
                     </FormControl>
-                    <Button variant='contained' onClick={login} sx={{margin:'5px', width: '95%'}}>Login</Button>
+                    <Button type='submit 'variant='contained' onClick={login} sx={{margin:'5px', width: '95%'}}>Login</Button>
                     <Link to='/register' style={{textAlign:'center'}}>Don't Have an Account? Register Here</Link>
                 </FormControl>
             </Box>

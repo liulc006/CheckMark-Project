@@ -9,6 +9,8 @@ import Register from './Register';
 import AccountProfile from './AccountProfile';
 import AccountProfileUpdate from './AccountProfileUpdate';
 import AccountPasswordUpdate from './AccountPasswordUpdate';
+import Footer from './Footer';
+import ChecklistGrid from './ChecklistGrid';
 
 const App = () => {
     const dispatch = useDispatch();
@@ -25,12 +27,14 @@ const App = () => {
             {auth._id? <Nav/>:null}
             <Routes>
                 <Route path='/' element={<Home/>} />
+                <Route path='/checklist' element={<ChecklistGrid/>} />
                 <Route path='/register' element={<Register/>}/>
                 <Route path='/account/:id' element={<AccountProfile />} />
                 <Route path='/account/:id/update' element={<AccountProfileUpdate />} />
                 <Route path='/account/:id/update_password' element={<AccountPasswordUpdate/>} />
-                <Route path='*' element={<h1>Error! Go Back</h1>} />
+                <Route path='*' element={<div style={{height:'calc(90vh - 4rem)'}}><h1>Error! Go Back</h1></div>} />
             </Routes>
+            <Footer/>
         </>
     );
 };
