@@ -57,7 +57,7 @@ const AccountPasswordUpdate = () => {
     };
     
     return (        
-        <div style={{display:'flex', flexDirection:'column', alignItems:'center'}}>
+        <div style={{display:'flex', flexDirection:'column', alignItems:'center', height:'85vh'}}>
             <Typography sx={{fontSize:'20', fontWeight:'bold', margin:'2rem'}}>Account Profile</Typography>
             <Box sx={{display:'flex', flexDirection:'column', border:'black 1px solid', borderRadius:'5%',padding:'2rem', width:'50%', backgroundColor:'aliceblue'}}>
                 {errorMessage ? <Alert sx={{width:'auto'}} severity="error">{errorMessage}</Alert>:null}
