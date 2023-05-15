@@ -32,9 +32,9 @@ const Nav = () => {
                         <Box>
                             <Link style={{textDecoration:'none', color:'white', fontWeight:'bold'}} to='/checklist'>CHECKLIST</Link>
                         </Box>
-                        {/* <Box>
+                        <Box>
                             <Link style={{textDecoration:'none', color:'white', fontWeight:'bold'}} to='/project-management'>PROJECT MANAGEMENT</Link>
-                        </Box> */}
+                        </Box>
                         <Box>
                             <IconButton>
                                 <Link to={`/account/${auth._id}`} style={{color:'white'}}>
@@ -61,9 +61,9 @@ const Nav = () => {
                     <Box>
                         <Link style={{textDecoration:'none', color:'white'}} to='/checklist'>CHECKLIST</Link>
                     </Box>
-                    {/* <Box>
+                    <Box>
                         <Link style={{textDecoration:'none', color:'white'}} to='/project-management'>PROJECT MANAGEMENT</Link>
-                    </Box> */}
+                    </Box>
                     <Box>
                         <IconButton>
                             <Link to={`/account/${auth._id}`} style={{color:'white'}}>
